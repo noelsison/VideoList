@@ -28,6 +28,8 @@ import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 public class VideoPlayerActivity extends AppCompatActivity {
 
     SQLiteDatabase mDb;
+    String mTitle;
+    String mFileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +40,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         VideoListDbHelper dbHelper = new VideoListDbHelper(this);
         mDb = dbHelper.getReadableDatabase();
 
-        String title = this.getIntent().getStringExtra("VIDEO_TITLE");
-        String fileName = this.getFileName(title);
+        int id = this.getIntent().getIntExtra("ID", 0);
+        this.getMediaItemRecord(id);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setTitle(mTitle);
 
         VideoView videoView = (VideoView) findViewById(R.id.vv_player);
 
@@ -50,7 +52,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         mediaController.setAnchorView(videoView);
 
         Uri videoUri = Uri.parse("android.resource://" + getPackageName()
-                + "/" + getResources().getIdentifier(fileName, "raw", getPackageName()));
+                + "/" + getResources().getIdentifier(mFileName, "raw", getPackageName()));
 
         Log.d(VideoPlayerActivity.class.getName(), videoUri.toString());
 
@@ -78,21 +80,24 @@ public class VideoPlayerActivity extends AppCompatActivity {
         }
     }
 
-    private String getFileName(String title) {
-        String filename = null;
+    private void getMediaItemRecord(Integer id) {
+        if (id == 0) {
+            Toast.makeText(this, String.format("No media with contentId %d", id), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Cursor cursor = mDb.query(MediaItemEntry.TABLE_NAME,
-                new String[] {MediaItemEntry.COLUMN_FILENAME},
-                MediaItemEntry.COLUMN_TITLE + " = ?",
-                new String[] {title},
+                new String[] {MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
+                MediaItemEntry._ID + " = ?",
+                new String[] {id.toString()},
                 null,
                 null,
                 null);
 
         if (cursor != null) {
             cursor.moveToFirst();
-            filename = cursor.getString(cursor.getColumnIndex(MediaItemEntry.COLUMN_FILENAME));
+            mTitle = cursor.getString(cursor.getColumnIndex(MediaItemEntry.COLUMN_TITLE));
+            mFileName = cursor.getString(cursor.getColumnIndex(MediaItemEntry.COLUMN_FILENAME));
         }
-
-        return filename;
     }
 }

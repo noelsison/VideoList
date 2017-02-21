@@ -9,9 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.noel.videolist.MainActivity">
 
-    <ListView
-        android:id="@+id/lv_videos"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_activity_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
