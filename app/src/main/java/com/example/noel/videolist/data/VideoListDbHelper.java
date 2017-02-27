@@ -17,8 +17,19 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "videoList.db";
     public static final int DATABASE_VERSION = 1;
 
-    public VideoListDbHelper(Context context) {
+    private static VideoListDbHelper instance;
+
+    private VideoListDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized VideoListDbHelper getInstance(Context context) {
+        if(instance == null) {
+            instance = new VideoListDbHelper(context.getApplicationContext());
+            // TODO: Remove inserting fake data when db has actual content
+            TestUtil.insertFakeData(instance.getWritableDatabase());
+        }
+        return instance;
     }
 
     @Override

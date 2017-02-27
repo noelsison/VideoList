@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 
 import com.example.noel.videolist.data.TestUtil;
+import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 import com.example.noel.videolist.data.VideoListDbHelper;
@@ -23,7 +24,7 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
 
     MainActivity activity;
 
-    SQLiteDatabase mDb;
+    SQLiteDatabase db;
 
     MainActivityLoadManager(MainActivity activity) {
         this.activity = activity;
@@ -35,7 +36,7 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
         switch (id) {
             case DB_LOADER:
                 return new CursorLoader(activity,
-                        null,
+                        VideoListContentProvider.CONTENT_URI,
                         new String[]{
                                 ContentItemEntry.COLUMN_TYPE,
                                 ContentItemEntry.COLUMN_TITLE,
@@ -43,23 +44,7 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
                         },
                         null,
                         null,
-                        MediaItemEntry.COLUMN_TITLE) {
-                    @Override
-                    public Cursor loadInBackground() {
-                        VideoListDbHelper dbHelper = new VideoListDbHelper(activity);
-                        mDb = dbHelper.getWritableDatabase();
-                        // Insert test data to DB
-                        TestUtil.insertFakeData(mDb);
-
-                        return mDb.query(ContentItemEntry.TABLE_NAME,
-                                getProjection(),
-                                getSelection(),
-                                getSelectionArgs(),
-                                null,
-                                null,
-                                getSortOrder());
-                    }
-                };
+                        MediaItemEntry.COLUMN_TITLE);
             default:
                 return null;
         }

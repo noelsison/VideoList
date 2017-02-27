@@ -18,7 +18,7 @@ import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
  */
 
 public class TestUtil {
-    public static final String TAG = TestUtil.class.getName();
+    private static final String TAG = TestUtil.class.getName();
 
     public static void insertFakeData(SQLiteDatabase db) {
         if (db == null) return;

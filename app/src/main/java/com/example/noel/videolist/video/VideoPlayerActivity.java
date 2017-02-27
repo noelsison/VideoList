@@ -48,11 +48,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
             videoWasPlaying = true; // Autoplay video by default
         }
 
-        videoView = (VideoView) findViewById(R.id.vv_player);
-
         mediaController = new MediaController(this);
-        mediaController.setAnchorView(findViewById(R.id.v_player_holder));
+        videoView = (VideoView) findViewById(R.id.vv_player);
         videoView.setMediaController(mediaController);
+        mediaController.setAnchorView(videoView);
 
         loadManager = new VideoPlayerLoadManager(this);
 

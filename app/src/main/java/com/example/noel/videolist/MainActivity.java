@@ -14,7 +14,7 @@ import com.example.noel.videolist.video.VideoPlayerActivity;
 
 public class MainActivity extends AppCompatActivity implements ActivityListAdapter.ActivityListAdapterClickHandler {
 
-    public final String TAG = MainActivity.class.getName();
+    private final String TAG = MainActivity.class.getName();
 
     RecyclerView recyclerView;
     ActivityListAdapter activityListAdapter;
