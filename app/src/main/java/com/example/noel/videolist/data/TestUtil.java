@@ -3,6 +3,7 @@ package com.example.noel.videolist.data;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,14 @@ import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
  */
 
 public class TestUtil {
+    public static final String TAG = TestUtil.class.getName();
 
     public static void insertFakeData(SQLiteDatabase db) {
         if (db == null) return;
-
+        Log.d(TAG, "Generating fake DB data");
         makeFakeContentItems(db);
         makeFakeMediaItems(db);
+        Log.d(TAG, "Done generating fake DB data");
     }
 
     private static void makeFakeContentItems(SQLiteDatabase db) {
