@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_video_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.noel.videolist.VideoPlayerActivity">
+    android:orientation="vertical"
+    tools:context="com.example.noel.videolist.video.VideoPlayerActivity">
 
-    <VideoView
+    <FrameLayout
+        android:id="@+id/v_player_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/vv_player" />
+        android:layout_height="wrap_content">
+        <VideoView
+            android:id="@+id/vv_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
 </LinearLayout>

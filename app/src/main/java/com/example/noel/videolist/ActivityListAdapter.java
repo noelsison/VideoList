@@ -62,9 +62,10 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
         }
     }
 
-    public void swapCursor(Cursor newCursor) {
-        if (this.cursor == newCursor) {
-            return;
+    public Cursor swapCursor(Cursor newCursor) {
+        Cursor oldCursor = this.cursor;
+        if (oldCursor == newCursor) {
+            return null;
         }
 
         if(newCursor != null) {
@@ -74,6 +75,8 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
             notifyItemRangeRemoved(0, getItemCount());
             cursor = null;
         }
+
+        return oldCursor;
     }
 
     public interface ActivityListAdapterClickHandler {

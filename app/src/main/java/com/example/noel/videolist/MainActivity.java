@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
+import com.example.noel.videolist.video.VideoPlayerActivity;
 
 public class MainActivity extends AppCompatActivity implements ActivityListAdapter.ActivityListAdapterClickHandler {
 
