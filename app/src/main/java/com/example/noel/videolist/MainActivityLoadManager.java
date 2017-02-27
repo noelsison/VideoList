@@ -18,7 +18,7 @@ import com.example.noel.videolist.data.VideoListDbHelper;
  * Created by Noel on 2/27/2017.
  */
 
-public class MainActivityController implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DB_LOADER = 0;
 
@@ -26,7 +26,7 @@ public class MainActivityController implements LoaderManager.LoaderCallbacks<Cur
 
     SQLiteDatabase mDb;
 
-    MainActivityController(MainActivity activity) {
+    MainActivityLoadManager(MainActivity activity) {
         this.mActivity = activity;
         mActivity.getLoaderManager().initLoader(DB_LOADER, null, this);
     }
@@ -37,13 +37,16 @@ public class MainActivityController implements LoaderManager.LoaderCallbacks<Cur
             case DB_LOADER:
                 return new CursorLoader(mActivity,
                         null,
-                        new String[]{ContentItemEntry.COLUMN_TYPE, ContentItemEntry.COLUMN_TITLE, ContentItemEntry.COLUMN_CONTENT_ID},
+                        new String[]{
+                                ContentItemEntry.COLUMN_TYPE,
+                                ContentItemEntry.COLUMN_TITLE,
+                                ContentItemEntry.COLUMN_CONTENT_ID
+                        },
                         null,
                         null,
                         MediaItemEntry.COLUMN_TITLE) {
                     @Override
                     public Cursor loadInBackground() {
-                        // DB
                         VideoListDbHelper dbHelper = new VideoListDbHelper(mActivity);
                         mDb = dbHelper.getWritableDatabase();
                         // Insert test data to DB

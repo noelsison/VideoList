@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 
 public class MainActivity extends AppCompatActivity implements ActivityListAdapter.ActivityListAdapterClickHandler {
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
 
     RecyclerView recyclerView;
     ActivityListAdapter activityListAdapter;
-    MainActivityController controller;
+    MainActivityLoadManager loadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,11 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
         recyclerView.setAdapter(activityListAdapter);
 
         // Handles DB
-        controller = new MainActivityController(this);
+        loadManager = new MainActivityLoadManager(this);
     }
 
     @Override
-    public void onClick(int type, int contentId) {
+    public void onItemClick(int type, int contentId) {
         switch (type) {
             case ContentType.VIDEO:
                 Intent intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
@@ -51,10 +52,9 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
                 startActivity(intent);
                 break;
             case ContentType.AUDIO_RECORD:
-                break;
             default:
-                Toast.makeText(this, String.format("Content contentId %d of contentType %d not supported",
-                        contentId, type), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, String.format("Content contentId %d of contentType %s not supported",
+                        contentId, DbConstants.ContentType.toString(type)), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
