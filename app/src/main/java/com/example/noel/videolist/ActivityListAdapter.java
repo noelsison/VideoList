@@ -16,7 +16,7 @@ import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
  * Created by Noel on 2/21/2017.
  */
 
-public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityItemViewHolder>{
+public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityItemViewHolder> {
 
     public final String TAG = ActivityListAdapter.class.getName();
 
@@ -26,7 +26,6 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
     public ActivityListAdapter(MainActivity activity, Cursor cursor) {
         this.mActivity = activity;
         this.mCursor = cursor;
-        Log.d(TAG, "Cursor count: " + cursor.getCount());
     }
 
     @Override
@@ -38,7 +37,8 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
 
     @Override
     public void onBindViewHolder(ActivityItemViewHolder holder, int position) {
-        if(!mCursor.moveToPosition(position)) return;
+        if (mCursor == null) return;
+        if (!mCursor.moveToPosition(position)) return;
 
         Integer intType = mCursor.getInt(mCursor.getColumnIndex(ContentItemEntry.COLUMN_TYPE));
         String type = ContentType.toString(intType);
@@ -55,7 +55,16 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        if (mCursor != null) {
+            return mCursor.getCount();
+        } else {
+            return 0;
+        }
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        this.mCursor = newCursor;
+        notifyDataSetChanged();
     }
 
     public interface ActivityListAdapterClickHandler {

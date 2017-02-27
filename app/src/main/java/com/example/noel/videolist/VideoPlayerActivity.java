@@ -27,6 +27,8 @@ import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
+    public static final String INTENT_EXTRA_ID = "CONTENT_ID";
+
     SQLiteDatabase mDb;
     String mTitle;
     String mFileName;
@@ -40,7 +42,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         VideoListDbHelper dbHelper = new VideoListDbHelper(this);
         mDb = dbHelper.getReadableDatabase();
 
-        int id = this.getIntent().getIntExtra("ID", 0);
+        int id = this.getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
         this.getMediaItemRecord(id);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
