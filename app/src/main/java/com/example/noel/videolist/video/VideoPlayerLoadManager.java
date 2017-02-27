@@ -44,7 +44,7 @@ public class VideoPlayerLoadManager implements LoaderManager.LoaderCallbacks<Cur
                         VideoListContract.MediaItemEntry.COLUMN_TITLE) {
                     @Override
                     public Cursor loadInBackground() {
-                        VideoListDbHelper dbHelper = new VideoListDbHelper(activity);
+                        VideoListDbHelper dbHelper = VideoListDbHelper.getInstance(activity);
                         mDb = dbHelper.getWritableDatabase();
                         // Insert test data to DB
                         TestUtil.insertFakeData(mDb);
