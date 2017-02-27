@@ -26,6 +26,8 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
     public static synchronized VideoListDbHelper getInstance(Context context) {
         if(instance == null) {
             instance = new VideoListDbHelper(context.getApplicationContext());
+            // TODO: Remove inserting fake data when db has actual content
+            TestUtil.insertFakeData(instance.getWritableDatabase());
         }
         return instance;
     }

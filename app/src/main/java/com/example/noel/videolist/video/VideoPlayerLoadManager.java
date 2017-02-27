@@ -5,10 +5,12 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.noel.videolist.MainActivity;
 import com.example.noel.videolist.data.TestUtil;
+import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
 import com.example.noel.videolist.data.VideoListDbHelper;
 
@@ -25,7 +27,7 @@ public class VideoPlayerLoadManager implements LoaderManager.LoaderCallbacks<Cur
 
     VideoPlayerActivity activity;
 
-    SQLiteDatabase mDb;
+    SQLiteDatabase db;
 
     public VideoPlayerLoadManager(VideoPlayerActivity activity) {
         this.activity = activity;
@@ -36,28 +38,13 @@ public class VideoPlayerLoadManager implements LoaderManager.LoaderCallbacks<Cur
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case DB_LOADER:
+                String mediaItemId = Integer.toString(activity.getCurrentMediaItemId());
                 return new CursorLoader(activity,
-                        null,
+                        Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemId),
                         new String[] {MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
                         MediaItemEntry._ID + " = ?",
-                        new String[] {Integer.toString(activity.getCurrentMediaItemId())},
-                        VideoListContract.MediaItemEntry.COLUMN_TITLE) {
-                    @Override
-                    public Cursor loadInBackground() {
-                        VideoListDbHelper dbHelper = VideoListDbHelper.getInstance(activity);
-                        mDb = dbHelper.getWritableDatabase();
-                        // Insert test data to DB
-                        TestUtil.insertFakeData(mDb);
-
-                        return mDb.query(MediaItemEntry.TABLE_NAME,
-                                getProjection(),
-                                getSelection(),
-                                getSelectionArgs(),
-                                null,
-                                null,
-                                getSortOrder());
-                    }
-                };
+                        new String[] {mediaItemId},
+                        VideoListContract.MediaItemEntry.COLUMN_TITLE);
             default:
                 return null;
         }

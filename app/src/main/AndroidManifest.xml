@@ -23,6 +23,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.noel.videolist"
+            android:exported="false"
+            android:name=".data.VideoListContentProvider" />
     </application>
 
 </manifest>

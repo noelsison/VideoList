@@ -49,10 +49,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
         }
 
         mediaController = new MediaController(this);
-
         videoView = (VideoView) findViewById(R.id.vv_player);
         videoView.setMediaController(mediaController);
-        mediaController.setAnchorView(findViewById(R.id.v_player_holder));
+        mediaController.setAnchorView(videoView);
 
         loadManager = new VideoPlayerLoadManager(this);
 

@@ -18,7 +18,7 @@ import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 
 public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityItemViewHolder> {
 
-    public final String TAG = ActivityListAdapter.class.getName();
+    private final String TAG = ActivityListAdapter.class.getName();
 
     private MainActivity activity;
     private Cursor cursor;
