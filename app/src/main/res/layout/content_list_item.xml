@@ -6,6 +6,7 @@
     android:padding="@dimen/default_padding">
 
     <!-- TODO: Change the activity type indicator to an icon -->
+    <!--
     <TextView
         android:id="@+id/tv_content_type"
         android:layout_width="0dp"
@@ -13,7 +14,7 @@
         android:layout_weight="1"
         android:textSize="@dimen/item_text_size"
         android:textStyle="bold" />
-
+    -->
     <TextView
         android:id="@+id/tv_content_title"
         android:layout_width="0dp"

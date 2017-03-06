@@ -48,7 +48,7 @@ public class ContentListAdapter  extends RecyclerView.Adapter<ContentListAdapter
 
         Log.d(TAG, String.format("Position: %d, contentType: %s, title: %s, contentId: %d", position, type, title, contentId));
 
-        holder.activityType.setText(type);
+        // holder.activityType.setText(type);
         holder.activityTitle.setText(title);
         holder.contentType = intType;
         holder.contentId = contentId;
@@ -86,14 +86,14 @@ public class ContentListAdapter  extends RecyclerView.Adapter<ContentListAdapter
 
     class ContentItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView activityType;
+        // TextView activityType;
         TextView activityTitle;
         int contentType;
         int contentId;
 
         public ContentItemViewHolder(View itemView) {
             super(itemView);
-            activityType = (TextView) itemView.findViewById(R.id.tv_content_type);
+            // activityType = (TextView) itemView.findViewById(R.id.tv_content_type);
             activityTitle = (TextView) itemView.findViewById(R.id.tv_content_title);
             itemView.setOnClickListener(this);
         }

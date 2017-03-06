@@ -46,10 +46,10 @@ public class TestUtil {
         List<ContentValues> list = new ArrayList<ContentValues>();
 
         // Fake ContentItem entries
-        list.add(makeContentItemValues(1, ContentType.AUDIO_RECORD, "Audio Record Activity", 1, 1));
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Big Buck Bunny", 1, 2));
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Cosmos Laundromat Trailer", 2, 3));
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Sintel Trailer", 3, 4));
+        list.add(makeContentItemValues(1, ContentType.AUDIO_RECORD, "Activity #1: Audio Record Activity", 1, 4));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson #1: Big Buck Bunny", 1, 1));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson #2: Cosmos Laundromat", 2, 2));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson #3: Sintel", 3, 3));
 
         makeDbTransactions(db, ContentItemEntry.TABLE_NAME, list);
     }
