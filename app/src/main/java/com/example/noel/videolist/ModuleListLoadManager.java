@@ -17,7 +17,7 @@ import com.example.noel.videolist.data.VideoListDbHelper;
  * Created by Noel on 2/27/2017.
  */
 
-public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ModuleListLoadManager implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DB_LOADER = 0;
 
@@ -25,7 +25,7 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
 
     SQLiteDatabase db;
 
-    MainActivityLoadManager(MainActivity activity) {
+    ModuleListLoadManager(MainActivity activity) {
         this.activity = activity;
         this.activity.getLoaderManager().initLoader(DB_LOADER, null, this);
     }

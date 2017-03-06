@@ -9,6 +9,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.MediaController;
 import android.widget.Toast;
@@ -68,17 +69,16 @@ public class VideoPlayerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.video_player, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).
-                            addNextIntentWithParentStack(upIntent).
-                            startActivities();
-                } else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+            case R.id.action_full_screen_video_player:
+                Toast.makeText(this, "Fullscreen menu option clicked.", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

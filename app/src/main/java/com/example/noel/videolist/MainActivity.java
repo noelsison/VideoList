@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noel.videolist.content.ContentListActivity;
 
@@ -17,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
     TextView textViewGreeting;
     RecyclerView recyclerView;
     ModuleListAdapter activityListAdapter;
-    MainActivityLoadManager loadManager;
+    ModuleListLoadManager loadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,28 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         recyclerView.setAdapter(activityListAdapter);
 
         // Handles DB
-        loadManager = new MainActivityLoadManager(this);
+        loadManager = new ModuleListLoadManager(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                break;
+            case R.id.action_assessment:
+                Toast.makeText(this, "Assessment menu option clicked.", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_profile:
+                Toast.makeText(this, "Profile menu option clicked.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

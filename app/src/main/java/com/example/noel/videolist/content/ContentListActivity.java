@@ -56,6 +56,8 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
 
         // Handles DB
         loadManager = new ContentListLoadManager(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
