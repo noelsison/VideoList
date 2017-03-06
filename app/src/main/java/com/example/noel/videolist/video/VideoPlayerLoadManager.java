@@ -8,13 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.noel.videolist.MainActivity;
-import com.example.noel.videolist.data.TestUtil;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.data.VideoListDbHelper;
-
-
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 
 /**

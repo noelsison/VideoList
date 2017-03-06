@@ -17,11 +17,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".video.VideoPlayerActivity"
+        <activity android:name=".content.ContentListActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.MainActivity" />
+        </activity>
+        <activity android:name=".video.VideoPlayerActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.noel.videolist.content.ContentListActivity" />
         </activity>
         <provider
             android:authorities="com.example.noel.videolist"

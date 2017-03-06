@@ -10,6 +10,7 @@ import java.util.List;
 
 
 import com.example.noel.videolist.data.DbConstants.ContentType;
+import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 
@@ -23,32 +24,34 @@ public class TestUtil {
     public static void insertFakeData(SQLiteDatabase db) {
         if (db == null) return;
         Log.d(TAG, "Generating fake DB data");
+        makeFakeModuleItems(db);
         makeFakeContentItems(db);
         makeFakeMediaItems(db);
         Log.d(TAG, "Done generating fake DB data");
+    }
+
+    private static void makeFakeModuleItems(SQLiteDatabase db) {
+        List<ContentValues> list = new ArrayList<ContentValues>();
+        // Fake MediaItem entries
+        list.add(makeModuleValues(1, "Interview"));
+        list.add(makeModuleValues(2, "Meeting"));
+        list.add(makeModuleValues(3, "Business Correspondence"));
+        list.add(makeModuleValues(4, "Presentation"));
+        list.add(makeModuleValues(5, "Teamwork"));
+
+        makeDbTransactions(db, ModuleEntry.TABLE_NAME, list);
     }
 
     private static void makeFakeContentItems(SQLiteDatabase db) {
         List<ContentValues> list = new ArrayList<ContentValues>();
 
         // Fake ContentItem entries
-        list.add(makeContentItemValues(ContentType.AUDIO_RECORD, "Audio Record Activity", 1));
-        list.add(makeContentItemValues(ContentType.VIDEO, "Big Buck Bunny", 1));
-        list.add(makeContentItemValues(ContentType.VIDEO, "Cosmos Laundromat Trailer", 2));
-        list.add(makeContentItemValues(ContentType.VIDEO, "Sintel Trailer", 3));
+        list.add(makeContentItemValues(1, ContentType.AUDIO_RECORD, "Audio Record Activity", 1, 1));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Big Buck Bunny", 1, 2));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Cosmos Laundromat Trailer", 2, 3));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Sintel Trailer", 3, 4));
 
-        try {
-            db.beginTransaction();
-            db.delete(ContentItemEntry.TABLE_NAME, null, null);
-            for (ContentValues values : list) {
-                db.insert(ContentItemEntry.TABLE_NAME, null, values);
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            db.endTransaction();
-        }
+        makeDbTransactions(db, ContentItemEntry.TABLE_NAME, list);
     }
 
     private static void makeFakeMediaItems(SQLiteDatabase db) {
@@ -58,11 +61,15 @@ public class TestUtil {
         list.add(makeMediaItemValues(2, "Cosmos Laundromat Trailer", "cosmos_laundromat_trailer"));
         list.add(makeMediaItemValues(3, "Sintel Trailer", "sintel_trailer"));
 
+        makeDbTransactions(db, MediaItemEntry.TABLE_NAME, list);
+    }
+
+    private static void makeDbTransactions(SQLiteDatabase db, String tableName, List<ContentValues> list) {
         try {
             db.beginTransaction();
-            db.delete(MediaItemEntry.TABLE_NAME, null, null);
+            db.delete(tableName, null, null);
             for (ContentValues values : list) {
-                db.insert(MediaItemEntry.TABLE_NAME, null, values);
+                db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -72,11 +79,20 @@ public class TestUtil {
         }
     }
 
-    private static ContentValues makeContentItemValues(Integer type, String title, Integer contentId) {
+    private static ContentValues makeModuleValues(Integer id, String title) {
         ContentValues cv = new ContentValues();
+        cv.put(ModuleEntry._ID, id);
+        cv.put(ModuleEntry.COLUMN_TITLE, title);
+        return cv;
+    }
+
+    private static ContentValues makeContentItemValues(Integer moduleId, Integer type, String title, Integer contentId, Integer seqNum) {
+        ContentValues cv = new ContentValues();
+        cv.put(ContentItemEntry.COLUM_MODULE_ID, moduleId);
         cv.put(ContentItemEntry.COLUMN_TYPE, type);
         cv.put(ContentItemEntry.COLUMN_TITLE, title);
         cv.put(ContentItemEntry.COLUMN_CONTENT_ID, contentId);
+        cv.put(ContentItemEntry.COLUMN_SEQ_NUM, seqNum);
         return cv;
     }
 

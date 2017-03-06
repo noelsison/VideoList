@@ -10,8 +10,7 @@ import android.os.Bundle;
 
 import com.example.noel.videolist.data.TestUtil;
 import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
-import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListDbHelper;
 
 /**
@@ -36,15 +35,14 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
         switch (id) {
             case DB_LOADER:
                 return new CursorLoader(activity,
-                        VideoListContentProvider.CONTENT_URI,
+                        VideoListContentProvider.MODULE_URI,
                         new String[]{
-                                ContentItemEntry.COLUMN_TYPE,
-                                ContentItemEntry.COLUMN_TITLE,
-                                ContentItemEntry.COLUMN_CONTENT_ID
+                                ModuleEntry._ID,
+                                ModuleEntry.COLUMN_TITLE
                         },
                         null,
                         null,
-                        MediaItemEntry.COLUMN_TITLE);
+                        ModuleEntry._ID);
             default:
                 return null;
         }
@@ -53,6 +51,8 @@ public class MainActivityLoadManager implements LoaderManager.LoaderCallbacks<Cu
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         activity.getActivityListAdapter().swapCursor(data);
+        // TODO: Change to fetch user's name
+        activity.getTextViewGreeting().setText("Hello User,");
     }
 
     @Override

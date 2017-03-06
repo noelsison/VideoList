@@ -1,4 +1,4 @@
-package com.example.noel.videolist;
+package com.example.noel.videolist.content;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -8,35 +8,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.noel.videolist.R;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 
 
 /**
- * Created by Noel on 2/21/2017.
+ * Created by Noel on 3/6/2017.
  */
 
-public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityItemViewHolder> {
+public class ContentListAdapter  extends RecyclerView.Adapter<ContentListAdapter.ContentItemViewHolder> {
 
-    private final String TAG = ActivityListAdapter.class.getName();
+    private final String TAG = ContentListAdapter.class.getName();
 
-    private MainActivity activity;
+    private ContentListActivity activity;
     private Cursor cursor;
 
-    public ActivityListAdapter(MainActivity activity, Cursor cursor) {
+    public ContentListAdapter(ContentListActivity activity, Cursor cursor) {
         this.activity = activity;
         this.cursor = cursor;
     }
 
     @Override
-    public ActivityItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContentItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.activity_main_list_item, parent, false);
-        return new ActivityItemViewHolder(view);
+        View view = inflater.inflate(R.layout.content_list_item, parent, false);
+        return new ContentItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ActivityItemViewHolder holder, int position) {
+    public void onBindViewHolder(ContentItemViewHolder holder, int position) {
         if (cursor == null || !cursor.moveToPosition(position)) {
             return;
         }
@@ -83,17 +84,17 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
         void onItemClick(int type, int contentId);
     }
 
-    class ActivityItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ContentItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView activityType;
         TextView activityTitle;
         int contentType;
         int contentId;
 
-        public ActivityItemViewHolder(View itemView) {
+        public ContentItemViewHolder(View itemView) {
             super(itemView);
-            activityType = (TextView) itemView.findViewById(R.id.tv_activity_type);
-            activityTitle = (TextView) itemView.findViewById(R.id.tv_activity_title);
+            activityType = (TextView) itemView.findViewById(R.id.tv_content_type);
+            activityTitle = (TextView) itemView.findViewById(R.id.tv_content_title);
             itemView.setOnClickListener(this);
         }
 

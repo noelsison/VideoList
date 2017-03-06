@@ -6,18 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.noel.videolist.data.DbConstants;
-import com.example.noel.videolist.data.DbConstants.ContentType;
-import com.example.noel.videolist.video.VideoPlayerActivity;
+import com.example.noel.videolist.content.ContentListActivity;
 
-public class MainActivity extends AppCompatActivity implements ActivityListAdapter.ActivityListAdapterClickHandler {
+public class MainActivity extends AppCompatActivity implements ModuleListAdapter.ActivityListAdapterClickHandler {
 
     private final String TAG = MainActivity.class.getName();
 
+    TextView textViewGreeting;
     RecyclerView recyclerView;
-    ActivityListAdapter activityListAdapter;
+    ModuleListAdapter activityListAdapter;
     MainActivityLoadManager loadManager;
 
     @Override
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
         setContentView(R.layout.activity_main);
 
         // Body UI
+        textViewGreeting = (TextView) findViewById(R.id.tv_greeting);
         recyclerView = (RecyclerView) findViewById(R.id.rv_activity_main);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        activityListAdapter = new ActivityListAdapter(this, null);
+        activityListAdapter = new ModuleListAdapter(this, null);
         recyclerView.setAdapter(activityListAdapter);
 
         // Handles DB
@@ -45,34 +45,19 @@ public class MainActivity extends AppCompatActivity implements ActivityListAdapt
     }
 
     @Override
-    public void onItemClick(int type, int contentId) {
-        switch (type) {
-            case ContentType.VIDEO:
-                Intent intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
-                intent.putExtra(VideoPlayerActivity.INTENT_EXTRA_ID, contentId);
-                startActivity(intent);
-                break;
-            case ContentType.AUDIO_RECORD:
-            default:
-                Toast.makeText(this, String.format("Content contentId %d of contentType %s not supported",
-                        contentId, DbConstants.ContentType.toString(type)), Toast.LENGTH_SHORT).show();
-                break;
-        }
+    public void onItemClick(int moduleId, String title) {
+        Intent intent = new Intent(getApplicationContext(), ContentListActivity.class);
+        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_ID, moduleId);
+        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_TITLE, title);
+        startActivity(intent);
     }
 
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-    public void setRecyclerView(RecyclerView recyclerView) {
-        this.recyclerView = recyclerView;
-    }
-
-    public ActivityListAdapter getActivityListAdapter() {
+    public ModuleListAdapter getActivityListAdapter() {
         return activityListAdapter;
     }
 
-    public void setActivityListAdapter(ActivityListAdapter activityListAdapter) {
-        this.activityListAdapter = activityListAdapter;
+    public TextView getTextViewGreeting() {
+        return textViewGreeting;
     }
+
 }

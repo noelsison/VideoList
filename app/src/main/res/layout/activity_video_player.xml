@@ -16,4 +16,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- TODO: Change placeholder text for transcript -->
+        <TextView
+            android:id="@+id/tv_video_transcript"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            android:text="@string/dummy"
+            android:textSize="@dimen/transcript_text_size"
+            android:lineSpacingExtra="@dimen/dummy_text_spacing"/>
+
+    </ScrollView>
+
 </LinearLayout>
