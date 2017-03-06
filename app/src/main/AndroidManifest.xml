@@ -18,13 +18,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".content.ContentListActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.MainActivity" />
         </activity>
         <activity android:name=".video.VideoPlayerActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".content.ContentListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.content.ContentListActivity" />
