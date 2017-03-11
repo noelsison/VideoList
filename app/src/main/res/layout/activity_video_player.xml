@@ -7,15 +7,18 @@
     android:orientation="vertical"
     tools:context="com.example.noel.videolist.video.VideoPlayerActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/v_player_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/black">
         <VideoView
             android:id="@+id/vv_player"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"  />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

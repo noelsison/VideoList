@@ -6,19 +6,23 @@ import android.content.Loader;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
-
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 
 public class VideoPlayerActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -26,47 +30,60 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     private static final int DB_LOADER = 0;
 
     public static final String INTENT_EXTRA_ID = "CONTENT_ID";
-    private static final String STATE_VIDEO_POS = "VIDEO_POS";
-    private static final String STATE_VIDEO_PLAYING = "VIDEO_PLAYING";
+    public static final String INTENT_VIDEO_POS = "VIDEO_POS";
+    public static final String INTENT_VIDEO_PLAYING = "VIDEO_PLAYING";
+    private static final String STATE_FULLSCREEN = "FULLSCREEN";
+
+    private static final int HIDE_STATUS_BAR_DELAY = 3000;
 
     String mTitle;
     int mediaItemId;
     int videoPosition;
     boolean videoWasPlaying;
+    boolean isFullScreen;
 
+    LinearLayout videoHolder;
     VideoView videoView;
     MediaController mediaController;
+
+    LinearLayout.LayoutParams defaultScreenParams;
+    LinearLayout.LayoutParams fullScreenParams;
+    Runnable fullScreenRunnable;
+    Runnable defaultScreenRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+        getSupportActionBar().setShowHideAnimationEnabled(false);
 
-        mediaItemId = this.getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
-        if (savedInstanceState != null) {
-            videoPosition = savedInstanceState.getInt(STATE_VIDEO_POS);
-            videoWasPlaying = savedInstanceState.getBoolean(STATE_VIDEO_PLAYING);
-        } else {
-            videoPosition = 0;
-            videoWasPlaying = true; // Autoplay video by default
-        }
-
+        initLayoutChanger();
+        mediaItemId = getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
+        videoHolder = (LinearLayout) findViewById(R.id.v_player_holder);
         mediaController = new MediaController(this);
         videoView = (VideoView) findViewById(R.id.vv_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
-
+        if (savedInstanceState != null) {
+            videoPosition = savedInstanceState.getInt(INTENT_VIDEO_POS);
+            videoWasPlaying = savedInstanceState.getBoolean(INTENT_VIDEO_PLAYING);
+            isFullScreen = savedInstanceState.getBoolean(STATE_FULLSCREEN);
+            toggleFullscreenMode(isFullScreen);
+        } else {
+            videoPosition = getIntent().getIntExtra(INTENT_VIDEO_POS, 0);
+            // Auto-play video by default
+            videoWasPlaying = getIntent().getBooleanExtra(INTENT_VIDEO_PLAYING, true);
+        }
         getLoaderManager().initLoader(DB_LOADER, null, this);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_FULLSCREEN, isFullScreen);
         if (videoView.getCurrentPosition() > 0) {
-            outState.putInt(STATE_VIDEO_POS, videoView.getCurrentPosition());
-            outState.putBoolean(STATE_VIDEO_PLAYING, videoView.isPlaying());
+            outState.putInt(INTENT_VIDEO_POS, videoView.getCurrentPosition());
+            outState.putBoolean(INTENT_VIDEO_PLAYING, videoView.isPlaying());
         }
     }
 
@@ -80,28 +97,58 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_full_screen_video_player:
-                Toast.makeText(this, "Fullscreen menu option clicked.", Toast.LENGTH_SHORT).show();
+                toggleFullscreenMode(true);
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public int getMediaItemId() {
-        return mediaItemId;
+    @Override
+    public void onBackPressed() {
+        if (isFullScreen) {
+            toggleFullscreenMode(false);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    public void playVideo(String filename) {
-        Uri videoUri = Uri.parse("android.resource://" + getPackageName()
-                + "/" + getResources().getIdentifier(filename, "raw", getPackageName()));
+    private void initLayoutChanger() {
+        defaultScreenParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        fullScreenParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        fullScreenParams.gravity = Gravity.CENTER;
 
-        Log.d(VideoPlayerActivity.class.getName(), videoUri.toString());
+        final View decorView = getWindow().getDecorView();
 
-        videoView.setVideoURI(videoUri);
-        videoView.requestFocus();
-        videoView.seekTo(videoPosition);
-        if (videoWasPlaying) {
-            videoView.start();
+        defaultScreenRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getSupportActionBar().show();
+                videoHolder.setLayoutParams(defaultScreenParams);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            }
+        };
+        fullScreenRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getSupportActionBar().hide();
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                videoHolder.setLayoutParams(fullScreenParams);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        };
+    }
+
+    public void toggleFullscreenMode(boolean isFullScreen) {
+        this.isFullScreen = isFullScreen;
+        if (isFullScreen) {
+            this.runOnUiThread(fullScreenRunnable);
+        } else {
+            this.runOnUiThread(defaultScreenRunnable);
         }
     }
 
@@ -112,9 +159,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 String mediaItemIdString = Integer.toString(mediaItemId);
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemIdString),
-                        new String[] {MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
+                        new String[]{MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
                         MediaItemEntry._ID + " = ?",
-                        new String[] {mediaItemIdString},
+                        new String[]{mediaItemIdString},
                         VideoListContract.MediaItemEntry.COLUMN_TITLE);
             default:
                 return null;
@@ -133,5 +180,19 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    protected void playVideo(String filename) {
+        Uri videoUri = Uri.parse("android.resource://" + getPackageName()
+                + "/" + getResources().getIdentifier(filename, "raw", getPackageName()));
+
+        Log.d(VideoPlayerActivity.class.getName(), videoUri.toString());
+
+        videoView.setVideoURI(videoUri);
+        videoView.requestFocus();
+        videoView.seekTo(videoPosition);
+        if (videoWasPlaying) {
+            videoView.start();
+        }
     }
 }
