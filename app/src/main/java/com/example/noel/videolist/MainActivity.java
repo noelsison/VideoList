@@ -1,6 +1,10 @@
 package com.example.noel.videolist;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,15 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noel.videolist.content.ContentListActivity;
+import com.example.noel.videolist.data.VideoListContentProvider;
+import com.example.noel.videolist.data.VideoListContract;
 
-public class MainActivity extends AppCompatActivity implements ModuleListAdapter.ActivityListAdapterClickHandler {
+public class MainActivity extends AppCompatActivity implements ModuleListAdapter.ActivityListAdapterClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = MainActivity.class.getName();
+    private static final int DB_LOADER = 0;
 
-    TextView textViewGreeting;
     RecyclerView recyclerView;
     ModuleListAdapter activityListAdapter;
-    ModuleListLoadManager loadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         setContentView(R.layout.activity_main);
 
         // Body UI
-        textViewGreeting = (TextView) findViewById(R.id.tv_greeting);
         recyclerView = (RecyclerView) findViewById(R.id.rv_activity_main);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         recyclerView.setAdapter(activityListAdapter);
 
         // Handles DB
-        loadManager = new ModuleListLoadManager(this);
+        getLoaderManager().initLoader(DB_LOADER, null, this);
     }
 
     @Override
@@ -76,12 +80,31 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         startActivity(intent);
     }
 
-    public ModuleListAdapter getActivityListAdapter() {
-        return activityListAdapter;
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case DB_LOADER:
+                return new CursorLoader(this,
+                        VideoListContentProvider.MODULE_URI,
+                        new String[]{
+                                VideoListContract.ModuleEntry._ID,
+                                VideoListContract.ModuleEntry.COLUMN_TITLE
+                        },
+                        null,
+                        null,
+                        VideoListContract.ModuleEntry._ID);
+            default:
+                return null;
+        }
     }
 
-    public TextView getTextViewGreeting() {
-        return textViewGreeting;
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        activityListAdapter.swapCursor(data);
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        activityListAdapter.swapCursor(null);
+    }
 }

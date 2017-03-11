@@ -1,11 +1,11 @@
 package com.example.noel.videolist.video;
 
-import android.content.Intent;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,31 +16,33 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.noel.videolist.R;
-import com.example.noel.videolist.data.VideoListDbHelper;
+import com.example.noel.videolist.data.VideoListContentProvider;
+import com.example.noel.videolist.data.VideoListContract;
 
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 
-public class VideoPlayerActivity extends AppCompatActivity {
+public class VideoPlayerActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int DB_LOADER = 0;
 
     public static final String INTENT_EXTRA_ID = "CONTENT_ID";
     private static final String STATE_VIDEO_POS = "VIDEO_POS";
     private static final String STATE_VIDEO_PLAYING = "VIDEO_PLAYING";
 
     String mTitle;
-    int currentMediaItemId;
+    int mediaItemId;
     int videoPosition;
     boolean videoWasPlaying;
 
     VideoView videoView;
     MediaController mediaController;
-    VideoPlayerLoadManager loadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
 
-        currentMediaItemId = this.getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
+        mediaItemId = this.getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
         if (savedInstanceState != null) {
             videoPosition = savedInstanceState.getInt(STATE_VIDEO_POS);
             videoWasPlaying = savedInstanceState.getBoolean(STATE_VIDEO_PLAYING);
@@ -54,7 +56,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
 
-        loadManager = new VideoPlayerLoadManager(this);
+        getLoaderManager().initLoader(DB_LOADER, null, this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -85,8 +87,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public int getCurrentMediaItemId() {
-        return currentMediaItemId;
+    public int getMediaItemId() {
+        return mediaItemId;
     }
 
     public void playVideo(String filename) {
@@ -101,5 +103,35 @@ public class VideoPlayerActivity extends AppCompatActivity {
         if (videoWasPlaying) {
             videoView.start();
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case DB_LOADER:
+                String mediaItemIdString = Integer.toString(mediaItemId);
+                return new CursorLoader(this,
+                        Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemIdString),
+                        new String[] {MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
+                        MediaItemEntry._ID + " = ?",
+                        new String[] {mediaItemIdString},
+                        VideoListContract.MediaItemEntry.COLUMN_TITLE);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        data.moveToFirst();
+        String title = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_TITLE));
+        String filename = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_FILENAME));
+        getSupportActionBar().setTitle(title);
+        playVideo(filename);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
