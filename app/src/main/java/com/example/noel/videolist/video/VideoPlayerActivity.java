@@ -41,6 +41,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     int videoPosition;
     boolean videoWasPlaying;
     boolean isFullScreen;
+    boolean fullScreenExplicitlySet;
 
     LinearLayout videoHolder;
     VideoView videoView;
@@ -50,6 +51,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     LinearLayout.LayoutParams fullScreenParams;
     Runnable fullScreenRunnable;
     Runnable defaultScreenRunnable;
+
+    Toast fullScreenPrompt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         videoView = (VideoView) findViewById(R.id.vv_video_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
+        fullScreenPrompt = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_SHORT);
+        fullScreenPrompt.setGravity(Gravity.TOP, 0, 0);
 
         initLayoutChanger();
 
@@ -109,6 +114,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_full_screen_video_player:
+                fullScreenExplicitlySet = true;
                 setFullscreenMode(true);
                 return true;
             case android.R.id.home:
@@ -121,7 +127,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public void onBackPressed() {
-        if (isFullScreen) {
+        if (fullScreenExplicitlySet) {
+            fullScreenExplicitlySet = false;
             setFullscreenMode(false);
         } else {
             super.onBackPressed();
@@ -151,7 +158,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 videoHolder.setLayoutParams(fullScreenParams);
                 if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                    Toast.makeText(getApplicationContext(), FULLSCREEN_PROMPT, Toast.LENGTH_SHORT).show();
+                    fullScreenPrompt.show();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
