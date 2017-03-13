@@ -35,13 +35,13 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public static final String INTENT_VIDEO_PLAYING = "VIDEO_PLAYING";
     private static final String STATE_FULLSCREEN = "FULLSCREEN";
 
-    private final String FULLSCREEN_PROMPT = "Press 'back' to exit fullscreen";
+    final String FULLSCREEN_PROMPT = "Press 'back' to exit full screen";
 
     int mediaItemId;
     int videoPosition;
-    boolean videoWasPlaying;
+    boolean isVideoPlaying;
     boolean isFullScreen;
-    boolean fullScreenExplicitlySet;
+    boolean isFullScreenExplicitlySet;
 
     LinearLayout videoHolder;
     VideoView videoView;
@@ -52,7 +52,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     Runnable fullScreenRunnable;
     Runnable defaultScreenRunnable;
 
-    Toast fullScreenPrompt;
+    Toast fullScreenToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,20 +66,20 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         videoView = (VideoView) findViewById(R.id.vv_video_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
-        fullScreenPrompt = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_SHORT);
-        fullScreenPrompt.setGravity(Gravity.TOP, 0, 0);
+        fullScreenToast = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_SHORT);
+        fullScreenToast.setGravity(Gravity.TOP, 0, 0);
 
         initLayoutChanger();
 
         if (savedInstanceState != null) {
             videoPosition = savedInstanceState.getInt(INTENT_VIDEO_POS);
-            videoWasPlaying = savedInstanceState.getBoolean(INTENT_VIDEO_PLAYING);
+            isVideoPlaying = savedInstanceState.getBoolean(INTENT_VIDEO_PLAYING);
             isFullScreen = savedInstanceState.getBoolean(STATE_FULLSCREEN);
             setFullscreenMode(isFullScreen);
         } else {
             videoPosition = getIntent().getIntExtra(INTENT_VIDEO_POS, 0);
             // Auto-play video by default
-            videoWasPlaying = getIntent().getBooleanExtra(INTENT_VIDEO_PLAYING, true);
+            isVideoPlaying = getIntent().getBooleanExtra(INTENT_VIDEO_PLAYING, true);
         }
         getLoaderManager().initLoader(DB_LOADER, null, this);
     }
@@ -114,7 +114,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_full_screen_video_player:
-                fullScreenExplicitlySet = true;
+                isFullScreenExplicitlySet = true;
                 setFullscreenMode(true);
                 return true;
             case android.R.id.home:
@@ -127,8 +127,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public void onBackPressed() {
-        if (fullScreenExplicitlySet) {
-            fullScreenExplicitlySet = false;
+        if (isFullScreenExplicitlySet) {
+            isFullScreenExplicitlySet = false;
             setFullscreenMode(false);
         } else {
             super.onBackPressed();
@@ -158,7 +158,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 videoHolder.setLayoutParams(fullScreenParams);
                 if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                    fullScreenPrompt.show();
+                    fullScreenToast.show();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
@@ -217,7 +217,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         videoView.setVideoURI(videoUri);
         videoView.requestFocus();
         videoView.seekTo(videoPosition);
-        if (videoWasPlaying) {
+        if (isVideoPlaying) {
             videoView.start();
         }
     }

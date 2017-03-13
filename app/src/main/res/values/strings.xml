@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">T4 MVP</string>
-    <string name="splash_message">Welcome to Tick Tock Tech Talk!\n What is your name?</string>
+    <string name="preference_file_key">com.example.noel.videolist.preference_file_key</string>
+    <string name="saved_first_time">saved_first_time</string>
+    <string name="saved_name">saved_first_time</string>
+
+    <string name="splash_message">Welcome to Tick Tock Tech Talk!\n First, what is your name?</string>
+    <string name="splash_button_text">Start</string>
     <string name="splash_placeholder_name">Name</string>
     <string name="main_greeting">What are you preparing for?</string>
     <string name="main_actionbar_assessment">Assessment</string>

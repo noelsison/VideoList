@@ -16,12 +16,10 @@
         android:orientation="vertical"
         android:padding="@dimen/padding_default">
 
-        <!-- TODO: Change hardcoded text to fetch from prefs/db -->
         <TextView
             android:id="@+id/tv_main_greeting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello User,"
             android:textSize="@dimen/text_size_list_item" />
 
         <TextView

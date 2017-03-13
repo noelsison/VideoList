@@ -2,25 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/padding_default">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_default"
+        android:layout_marginBottom="@dimen/padding_default"
+        android:lineSpacingExtra="@dimen/text_spacing_splash"
+        android:paddingTop="@dimen/padding_default"
         android:text="@string/splash_message"
         android:textAlignment="center"
-        android:textSize="@dimen/text_size_default" />
+        android:textSize="@dimen/text_size_splash_greeting" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/et_splash_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_default"
         android:hint="@string/splash_placeholder_name"
-        android:inputType="textPersonName"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName|textCapWords"
+        android:textSize="@dimen/text_size_default" />
+
+    <Button
+        android:id="@+id/b_splash_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/splash_button_text"
+        android:textAllCaps="false"
         android:textSize="@dimen/text_size_default" />
 
 </LinearLayout>
