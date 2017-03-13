@@ -32,7 +32,7 @@ public class ContentListAdapter  extends RecyclerView.Adapter<ContentListAdapter
     @Override
     public ContentItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.content_list_item, parent, false);
+        View view = inflater.inflate(R.layout.item_content_list, parent, false);
         return new ContentItemViewHolder(view);
     }
 
@@ -94,7 +94,7 @@ public class ContentListAdapter  extends RecyclerView.Adapter<ContentListAdapter
         public ContentItemViewHolder(View itemView) {
             super(itemView);
             // activityType = (TextView) itemView.findViewById(R.id.tv_content_type);
-            activityTitle = (TextView) itemView.findViewById(R.id.tv_content_title);
+            activityTitle = (TextView) itemView.findViewById(R.id.tv_content_list_item_title);
             itemView.setOnClickListener(this);
         }
 

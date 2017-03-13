@@ -4,10 +4,10 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.noel.videolist.R;
@@ -34,9 +35,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public static final String INTENT_VIDEO_PLAYING = "VIDEO_PLAYING";
     private static final String STATE_FULLSCREEN = "FULLSCREEN";
 
-    private static final int HIDE_STATUS_BAR_DELAY = 3000;
+    private final String FULLSCREEN_PROMPT = "Press 'back' to exit fullscreen";
 
-    String mTitle;
     int mediaItemId;
     int videoPosition;
     boolean videoWasPlaying;
@@ -57,24 +57,36 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         setContentView(R.layout.activity_video_player);
         getSupportActionBar().setShowHideAnimationEnabled(false);
 
-        initLayoutChanger();
         mediaItemId = getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
-        videoHolder = (LinearLayout) findViewById(R.id.v_player_holder);
+        videoHolder = (LinearLayout) findViewById(R.id.ll_video_player_holder);
         mediaController = new MediaController(this);
-        videoView = (VideoView) findViewById(R.id.vv_player);
+        videoView = (VideoView) findViewById(R.id.vv_video_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
+
+        initLayoutChanger();
+
         if (savedInstanceState != null) {
             videoPosition = savedInstanceState.getInt(INTENT_VIDEO_POS);
             videoWasPlaying = savedInstanceState.getBoolean(INTENT_VIDEO_PLAYING);
             isFullScreen = savedInstanceState.getBoolean(STATE_FULLSCREEN);
-            toggleFullscreenMode(isFullScreen);
+            setFullscreenMode(isFullScreen);
         } else {
             videoPosition = getIntent().getIntExtra(INTENT_VIDEO_POS, 0);
             // Auto-play video by default
             videoWasPlaying = getIntent().getBooleanExtra(INTENT_VIDEO_PLAYING, true);
         }
         getLoaderManager().initLoader(DB_LOADER, null, this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setFullscreenMode(true);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setFullscreenMode(false);
+        }
     }
 
     @Override
@@ -97,7 +109,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_full_screen_video_player:
-                toggleFullscreenMode(true);
+                setFullscreenMode(true);
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -110,14 +122,14 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onBackPressed() {
         if (isFullScreen) {
-            toggleFullscreenMode(false);
+            setFullscreenMode(false);
         } else {
             super.onBackPressed();
         }
     }
 
     private void initLayoutChanger() {
-        defaultScreenParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        defaultScreenParams = (LinearLayout.LayoutParams) videoHolder.getLayoutParams();
         fullScreenParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         fullScreenParams.gravity = Gravity.CENTER;
 
@@ -138,17 +150,24 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 getSupportActionBar().hide();
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 videoHolder.setLayoutParams(fullScreenParams);
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+                    Toast.makeText(getApplicationContext(), FULLSCREEN_PROMPT, Toast.LENGTH_SHORT).show();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
             }
         };
     }
 
-    public void toggleFullscreenMode(boolean isFullScreen) {
-        this.isFullScreen = isFullScreen;
-        if (isFullScreen) {
-            this.runOnUiThread(fullScreenRunnable);
+    public void setFullscreenMode(boolean isFullScreen) {
+        if (this.isFullScreen == isFullScreen) {
+            return;
         } else {
-            this.runOnUiThread(defaultScreenRunnable);
+            this.isFullScreen = isFullScreen;
+            if (isFullScreen) {
+                this.runOnUiThread(fullScreenRunnable);
+            } else {
+                this.runOnUiThread(defaultScreenRunnable);
+            }
         }
     }
 

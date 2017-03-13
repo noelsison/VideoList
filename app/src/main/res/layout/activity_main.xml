@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.noel.videolist.MainActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:orientation="vertical"
-        android:padding="@dimen/default_padding">
+        android:padding="@dimen/padding_default">
 
         <!-- TODO: Change hardcoded text to fetch from prefs/db -->
         <TextView
-            android:id="@+id/tv_greeting"
+            android:id="@+id/tv_main_greeting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/item_text_size"
-            android:text="Hello User," />
+            android:text="Hello User,"
+            android:textSize="@dimen/text_size_list_item" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/greeting_question"
-            android:textSize="@dimen/item_text_size" />
+            android:text="@string/main_greeting"
+            android:textSize="@dimen/text_size_list_item" />
 
     </LinearLayout>
 
@@ -38,14 +37,14 @@
         android:layout_height="1dp"
         android:layout_weight="0"
         android:background="@color/light_gray"
-        android:paddingTop="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding" />
+        android:paddingLeft="@dimen/padding_default"
+        android:paddingRight="@dimen/padding_default"
+        android:paddingTop="@dimen/padding_default" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_activity_main"
+        android:id="@+id/rv_main_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

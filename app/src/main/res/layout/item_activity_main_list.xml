@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/default_padding">
+    android:padding="@dimen/padding_default">
 
     <TextView
-        android:id="@+id/tv_module_title"
+        android:id="@+id/tv_main_list_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/item_text_size" />
+        android:textSize="@dimen/text_size_list_item" />
 
 </LinearLayout>

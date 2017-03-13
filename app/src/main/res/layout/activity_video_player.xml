@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_video_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.noel.videolist.video.VideoPlayerActivity">
+    tools:context=".video.VideoPlayerActivity">
 
     <LinearLayout
-        android:id="@+id/v_player_holder"
+        android:id="@+id/ll_video_player_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/black">
+        android:background="@android:color/black"
+        android:orientation="horizontal">
+
         <VideoView
-            android:id="@+id/vv_player"
+            android:id="@+id/vv_video_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"  />
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <ScrollView
@@ -26,13 +26,13 @@
 
         <!-- TODO: Change placeholder text for transcript -->
         <TextView
-            android:id="@+id/tv_video_transcript"
+            android:id="@+id/tv_video_player_transcript"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/default_padding"
+            android:lineSpacingExtra="@dimen/text_spacing_dummy"
+            android:padding="@dimen/padding_default"
             android:text="@string/dummy"
-            android:textSize="@dimen/transcript_text_size"
-            android:lineSpacingExtra="@dimen/dummy_text_spacing"/>
+            android:textSize="@dimen/text_size_default" />
 
     </ScrollView>
 

@@ -30,7 +30,7 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Ac
     @Override
     public ActivityItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View view = inflater.inflate(R.layout.activity_main_list_item, parent, false);
+        View view = inflater.inflate(R.layout.item_activity_main_list, parent, false);
         return new ActivityItemViewHolder(view);
     }
 
@@ -85,7 +85,7 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Ac
 
         public ActivityItemViewHolder(View itemView) {
             super(itemView);
-            moduleTitle = (TextView) itemView.findViewById(R.id.tv_module_title);
+            moduleTitle = (TextView) itemView.findViewById(R.id.tv_main_list_item_title);
             itemView.setOnClickListener(this);
         }
 

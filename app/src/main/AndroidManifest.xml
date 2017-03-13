@@ -25,6 +25,7 @@
                 android:value="com.example.noel.videolist.MainActivity" />
         </activity>
         <activity android:name=".video.VideoPlayerActivity"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".content.ContentListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

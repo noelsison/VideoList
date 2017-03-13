@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_full_screen_video_player"
-        android:title="@string/fullscreen"
+        android:title="@string/video_actionbar_fullscreen"
         app:showAsAction="ifRoom"
         android:orderInCategory="1"></item>
 </menu>

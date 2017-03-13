@@ -5,10 +5,10 @@
         android:id="@+id/action_assessment"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
-        android:title="@string/assessment"></item>
+        android:title="@string/main_actionbar_assessment"></item>
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="2"
         app:showAsAction="ifRoom"
-        android:title="@string/profile"></item>
+        android:title="@string/main_actionbar_profile"></item>
 </menu>

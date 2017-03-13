@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noel.videolist.content.ContentListActivity;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         setContentView(R.layout.activity_main);
 
         // Body UI
-        recyclerView = (RecyclerView) findViewById(R.id.rv_activity_main);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main_list);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

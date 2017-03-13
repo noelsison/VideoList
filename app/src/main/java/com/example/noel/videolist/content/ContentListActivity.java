@@ -20,8 +20,6 @@ import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
 import com.example.noel.videolist.video.VideoPlayerActivity;
 
-import java.util.Locale;
-
 /**
  * Created by Noel on 3/6/2017.
  */
@@ -48,7 +46,7 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
         moduleTitle = this.getIntent().getStringExtra(INTENT_EXTRA_MODULE_TITLE);
 
         // Main UI
-        setContentView(R.layout.content_list_activity);
+        setContentView(R.layout.activity_content_list);
         getSupportActionBar().setTitle(moduleTitle);
 
         // Body UI

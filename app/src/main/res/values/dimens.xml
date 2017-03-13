@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Project specific dimensions -->
-    <dimen name="default_padding">16dp</dimen>
-    <dimen name="item_text_size">20sp</dimen>
-    <dimen name="transcript_text_size">20sp</dimen>
-    <dimen name="dummy_text_spacing">15sp</dimen>
+    <dimen name="padding_default">16dp</dimen>
+    <dimen name="text_size_default">20sp</dimen>
+    <dimen name="text_size_list_item">20sp</dimen>
+    <dimen name="text_spacing_dummy">15sp</dimen>
 </resources>
