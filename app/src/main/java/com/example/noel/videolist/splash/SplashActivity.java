@@ -58,7 +58,8 @@ public class SplashActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.saved_first_time), false);
         editor.putString(getString(R.string.saved_name), editTextName.getText().toString());

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
     RecyclerView recyclerView;
     ModuleListAdapter adapter;
 
+    String savedName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         setContentView(R.layout.activity_main);
 
         // Body UI
+        textViewGreeting = (TextView) findViewById(R.id.tv_main_greeting);
+        textViewGreeting.setText(String.format(greetingFormat, savedName));
         recyclerView = (RecyclerView) findViewById(R.id.rv_main_list);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -70,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
             startActivity(intent);
             finish();
         } else {
-            textViewGreeting = (TextView) findViewById(R.id.tv_main_greeting);
-            String savedName = sharedPreferences.getString(getString(R.string.saved_name), defaultName);
-            textViewGreeting.setText(String.format(greetingFormat, savedName));
+            savedName = sharedPreferences.getString(getString(R.string.saved_name), defaultName);
         }
     }
 
