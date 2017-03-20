@@ -31,8 +31,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        buttonStart = (Button) findViewById(R.id.b_splash_start);
-        editTextName = (EditText) findViewById(R.id.et_splash_name);
+        buttonStart = (Button) findViewById(R.id.splash_b_start);
+        editTextName = (EditText) findViewById(R.id.splash_et_name);
         editTextName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -54,7 +54,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void submitName() {
         if (editTextName.getText().toString().trim().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    getApplicationContext(),
+                    getString(R.string.splash_error_name_empty),
+                    Toast.LENGTH_SHORT
+            ).show();
             return;
         }
 
