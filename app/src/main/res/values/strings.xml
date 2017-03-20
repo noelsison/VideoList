@@ -4,9 +4,11 @@
     <string name="saved_first_time">saved_first_time</string>
     <string name="saved_name">saved_name</string>
 
-    <string name="splash_message">Welcome to Tick Tock Tech Talk!\n First, what is your name?</string>
-    <string name="splash_button_text">Start</string>
-    <string name="splash_placeholder_name">Name</string>
+    <string name="splash_greeting">Welcome to Tick Tock Tech Talk!\n First, what is your name?</string>
+    <string name="splash_button_start">Start</string>
+    <string name="splash_hint_name">Name</string>
+    <string name="splash_error_name_empty">Please enter your name</string>
+
     <string name="main_greeting">What are you preparing for?</string>
     <string name="main_actionbar_assessment">Assessment</string>
     <string name="main_actionbar_profile">Profile</string>
