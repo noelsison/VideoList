@@ -23,6 +23,7 @@ import com.example.noel.videolist.R;
 
 public class SplashActivity extends AppCompatActivity {
 
+    Toast toastNameError;
     Button buttonStart;
     EditText editTextName;
 
@@ -30,6 +31,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        toastNameError = Toast.makeText(
+                getApplicationContext(),
+                getString(R.string.splash_error_name_empty),
+                Toast.LENGTH_SHORT
+        );
 
         buttonStart = (Button) findViewById(R.id.splash_b_start);
         editTextName = (EditText) findViewById(R.id.splash_et_name);
@@ -54,11 +60,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void submitName() {
         if (editTextName.getText().toString().trim().isEmpty()) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    getString(R.string.splash_error_name_empty),
-                    Toast.LENGTH_SHORT
-            ).show();
+            toastNameError.show();
             return;
         }
 
@@ -72,5 +74,11 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void hideToast() {
+        if (toastNameError != null) {
+            toastNameError.cancel();
+        }
     }
 }
