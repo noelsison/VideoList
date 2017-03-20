@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.noel.videolist.R;
+import com.example.noel.videolist.audio.AudioRecorderActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
@@ -70,13 +71,17 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
 
     @Override
     public void onItemClick(int type, int contentId) {
+        Intent intent;
         switch (type) {
             case ContentType.VIDEO:
-                Intent intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
+                intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
                 intent.putExtra(VideoPlayerActivity.INTENT_EXTRA_ID, contentId);
                 startActivity(intent);
                 break;
             case ContentType.AUDIO_RECORD:
+                intent =  new Intent(getApplicationContext(), AudioRecorderActivity.class);
+                startActivity(intent);
+                break;
             default:
                 Toast.makeText(this, String.format("Content contentId %d of contentType %s not supported",
                         contentId, DbConstants.ContentType.toString(type)), Toast.LENGTH_SHORT).show();

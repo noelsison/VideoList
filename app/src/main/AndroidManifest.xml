@@ -3,6 +3,8 @@
     package="com.example.noel.videolist">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +30,12 @@
         </activity>
         <activity android:name=".video.VideoPlayerActivity"
             android:configChanges="orientation|screenSize"
+            android:parentActivityName=".content.ContentListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.noel.videolist.content.ContentListActivity" />
+        </activity>
+        <activity android:name=".audio.AudioRecorderActivity"
             android:parentActivityName=".content.ContentListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
