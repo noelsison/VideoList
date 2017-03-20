@@ -59,7 +59,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void submitName() {
-        if (editTextName.getText().toString().trim().isEmpty()) {
+        String inputName = editTextName.getText().toString().trim();
+        if (inputName.isEmpty()) {
             toastNameError.show();
             return;
         }
@@ -68,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.saved_first_time), false);
-        editor.putString(getString(R.string.saved_name), editTextName.getText().toString());
+        editor.putString(getString(R.string.saved_name), inputName.toString());
         editor.commit();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);

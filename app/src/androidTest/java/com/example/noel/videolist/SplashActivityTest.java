@@ -2,6 +2,7 @@ package com.example.noel.videolist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.test.espresso.NoMatchingRootException;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -42,23 +43,22 @@ public class SplashActivityTest {
     @Test
     public void testLaunchState() throws Exception {
         /*
-        When splash/personalization screen is launched, the user should see the following:
-        1. Text greeting: "Welcome to Tick Tock Tech Talk!\n First, what is your name?"
-        2. Input field with placeholder (hint in android) "Name"
-        3. Button with text "Start"
+        When user opens the splash/personalization activity
+        Then the following is seen:
+            1. Text greeting: "Welcome to Tick Tock Tech Talk!\n First, what is your name?"
+            2. Input field with placeholder (hint in android) "Name" and empty text input
+            3. Button with text "Start"
          */
 
         onView(withId(R.id.splash_tv_greeting)).check(matches(withText(R.string.splash_greeting)));
         onView(withId(R.id.splash_et_name)).check(matches(withHint(R.string.splash_hint_name)));
         onView(withId(R.id.splash_et_name)).check(matches(withText("")));
         onView(withId(R.id.splash_b_start)).check(matches(withText(R.string.splash_button_start)));
-    }
 
-    @Test
-    public void testEmptynameInput() {
         /*
-        When user clicks "Start" button while the input field for "Name" is empty,
-        display a toast with the message "Please enter your name".
+        When user leaves the name input field blank
+        And user clicks "Start" button
+        Then display a toast with the message "Please enter your name".
          */
 
         final String stringEmpty = "";
@@ -66,32 +66,41 @@ public class SplashActivityTest {
         onView(withId(R.id.splash_et_name)).perform(typeText(stringEmpty), closeSoftKeyboard());
         onView(withId(R.id.splash_b_start)).perform(click());
         onView(withText(R.string.splash_error_name_empty)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-    }
 
-    @Test
-    public void testSpacesOnlyNameInput() {
+        // Hide the toast for the next test since we don't want to wait
+        activityRule.getActivity().hideToast();
+        boolean isToastHidden = false;
+        try {
+            onView(withText(R.string.splash_error_name_empty)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        } catch (NoMatchingRootException e) {
+            isToastHidden = true;
+        } finally {
+            assertTrue("Toast is hidden?", isToastHidden);
+        }
+
         /*
-        When user clicks "Start" button while the input field for "Name" are just spaces,
-        display a toast with the message "Please enter your name".
+        When user types in spaces to the name input field
+        And user clicks "Start" button
+        Then display a toast with the message "Please enter your name".
          */
 
         final String stringSpaces = "   ";
-
         onView(withId(R.id.splash_et_name)).perform(typeText(stringSpaces), closeSoftKeyboard());
         onView(withId(R.id.splash_b_start)).perform(click());
         onView(withText(R.string.splash_error_name_empty)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-    }
 
-    @Test
-    public void testCorrectNameInput() {
         /*
-        When user enters a non-empty name in the input field  and clicks "Start" button, save the
-        following shared preferences with values:
-        saved_first_time: false
-        saved_name: <what was placed in the input field>
+        When user types in a non-empty name in the input field
+        And user clicks "Start" button
+        Then the following shared preferences with values should be saved:
+            saved_first_time: false
+            saved_name: <what was placed in the input field with leading/trailing spaces trimmed>
+        And MainActivity should be launched
          */
-        final String stringName = "Name";
+        final String stringName = "   Name   ";
+        final String expectedSavedName = stringName.trim();
 
+        // Note that "user" did not clear previously input spaces and just appended a name
         onView(withId(R.id.splash_et_name)).perform(typeText(stringName), closeSoftKeyboard());
         onView(withId(R.id.splash_b_start)).perform(click());
 
@@ -102,11 +111,7 @@ public class SplashActivityTest {
         assertFalse(savedFirstLaunch);
 
         String savedName = sharedPreferences.getString(activity.getString(R.string.saved_name), null);
-        assertTrue(stringName.equals(savedName));
-
-        /*
-        Then launch the MainActivity
-         */
+        assertTrue(expectedSavedName + " =? " + savedName, savedName.equals(expectedSavedName));
 
         intended(hasComponent(MainActivity.class.getName()));
     }
