@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -29,7 +28,6 @@ public class AudioRecorderActivity extends AppCompatActivity {
     private static final String TAG = AudioRecorderActivity.class.getName();
     private static final int REQUEST_PERMISSIONS_CODE = 200;
     private static final int PERMISSION_RECORD_AUDIO = 0;
-    private static final int PERMISSION_WRITE_EXTERNAL = 1;
     private static String filename;
 
     Button buttonRecord;
@@ -39,11 +37,7 @@ public class AudioRecorderActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
 
     boolean isPermissionToRecordAccepted = false;
-    boolean isPermissionToStoreAccepted = false;
-    String[] permissions = {
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+    String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
     boolean isRecording = false;
     boolean isPlaying = false;
@@ -53,7 +47,7 @@ public class AudioRecorderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_recorder);
 
-        filename = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordtest.3gp";
+        filename = getExternalCacheDir().getAbsolutePath() + "/audiorecordtest.3gp";
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS_CODE);
     }
@@ -65,10 +59,9 @@ public class AudioRecorderActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSIONS_CODE:
                 isPermissionToRecordAccepted = grantResults[PERMISSION_RECORD_AUDIO] == PackageManager.PERMISSION_GRANTED;
-                isPermissionToStoreAccepted = grantResults[PERMISSION_WRITE_EXTERNAL] == PackageManager.PERMISSION_GRANTED;
                 break;
         }
-        if (!isPermissionToRecordAccepted && isPermissionToStoreAccepted) {
+        if (!isPermissionToRecordAccepted) {
             finish();
         } else {
             initialize();
@@ -89,14 +82,6 @@ public class AudioRecorderActivity extends AppCompatActivity {
     }
 
     protected void initialize() {
-        mediaPlayer = new MediaPlayer();
-
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(filename);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
         buttonRecord = (Button) findViewById(R.id.audio_recorder_record);
         buttonRecord.setText("Recording: " + isRecording);
         buttonRecord.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +124,11 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
     protected void startRecording() {
         try {
+            mediaRecorder = new MediaRecorder();
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setOutputFile(filename);
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mediaRecorder.prepare();
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,6 +141,7 @@ public class AudioRecorderActivity extends AppCompatActivity {
     protected void stopRecording() {
         mediaRecorder.stop();
         mediaRecorder.release();
+        mediaRecorder = null;
     }
 
     protected void onPlay(boolean isStarted) {
@@ -163,9 +154,12 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
     protected void startPlaying() {
         try {
+            mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(filename);
             mediaPlayer.prepare();
             mediaPlayer.start();
+            // TODO: Add completion listener to media player
+            // TODO: Add media controls to media player
         } catch (IOException e) {
             Log.e(TAG, "Play failed");
         }
@@ -173,5 +167,6 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
     protected void stopPlaying() {
         mediaPlayer.release();
+        mediaPlayer = null;
     }
 }
