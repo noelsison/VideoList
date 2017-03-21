@@ -20,7 +20,8 @@
             android:id="@+id/tv_main_greeting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_list_item" />
+            android:textSize="@dimen/text_size_list_item"
+            tools:text="Hello User,"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
         android:id="@+id/rv_main_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        tools:listitem="@layout/item_activity_main_list" />
 
 </LinearLayout>

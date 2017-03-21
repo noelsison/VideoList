@@ -66,7 +66,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         videoView = (VideoView) findViewById(R.id.vv_video_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
-        fullScreenToast = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_SHORT);
+        fullScreenToast = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_LONG);
         fullScreenToast.setGravity(Gravity.TOP, 0, 0);
 
         initLayoutChanger();
