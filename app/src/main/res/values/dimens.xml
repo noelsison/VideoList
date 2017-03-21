@@ -5,6 +5,7 @@
 
     <!-- Project specific dimensions -->
     <dimen name="padding_default">16dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
     <dimen name="text_size_default">20sp</dimen>
     <dimen name="text_size_list_item">20sp</dimen>
     <dimen name="text_size_splash_greeting">24sp</dimen>
