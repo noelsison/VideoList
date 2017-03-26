@@ -1,18 +1,20 @@
 package com.example.noel.videolist.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 
 /**
  * Created by Noel on 2/27/2017.
@@ -41,7 +43,7 @@ public class VideoListContentProvider extends ContentProvider {
     public static final Uri MEDIA_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, MEDIA_PATH));
 
     // String format
-    public static final String TYPE_FORMAT = "%s/vnd.%s";
+    public static final String TYPE_FORMAT = "%s/vnd.example.noel.videolist.%s";
 
     private static final UriMatcher uriMatcher;
 
@@ -56,8 +58,6 @@ public class VideoListContentProvider extends ContentProvider {
     }
 
     private static final String unsupportedUri = "Unsupported URI: ";
-    private static final String mimeItem = "cnd.android.cursor.item";
-    private static final String mimeDir = "cnd.android.cursor.dir";
 
 
     SQLiteDatabase db;
@@ -73,23 +73,21 @@ public class VideoListContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "Query: " + uri);
         String tableName = null;
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         switch (uriMatcher.match(uri)) {
             default:
                 throw new IllegalArgumentException(unsupportedUri + uri);
             case MODULE_ALL:
-                tableName = ModuleEntry.TABLE_NAME;
+                queryBuilder.setTables(ModuleEntry.TABLE_NAME);
                 break;
             case MODULE_CONTENT:
-                tableName = ContentItemEntry.TABLE_NAME;
-                if (selection == null) {
-                    selection = ContentItemEntry.COLUM_MODULE_ID + " = " + uri.getLastPathSegment();
-                }
+                queryBuilder.setTables(ContentItemEntry.TABLE_NAME);
+                queryBuilder.appendWhere(ContentItemEntry.COLUM_MODULE_ID + " = " + uri.getLastPathSegment());
+                // Use appendWhereEscapeString for user input
                 break;
             case MEDIA_ITEM:
-                tableName = MediaItemEntry.TABLE_NAME;
-                if (selection == null) {
-                    selection = "_ID = " + uri.getLastPathSegment();
-                }
+                queryBuilder.setTables(MediaItemEntry.TABLE_NAME);
+                queryBuilder.appendWhere("_ID = " + uri.getLastPathSegment());
                 break;
         }
 
@@ -103,6 +101,7 @@ public class VideoListContentProvider extends ContentProvider {
                     null,
                     null,
                     sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
@@ -114,13 +113,13 @@ public class VideoListContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
             case MODULE_ALL:
-                return String.format(TYPE_FORMAT, mimeDir, MODULE_URI);
+                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_DIR_BASE_TYPE, MODULE_PATH);
             case MODULE_CONTENT:
-                return String.format(TYPE_FORMAT, mimeItem, MODULE_URI);
+                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_ITEM_BASE_TYPE, MODULE_PATH);
             case CONTENT_ALL:
-                return String.format(TYPE_FORMAT, mimeDir, CONTENT_URI);
+                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_DIR_BASE_TYPE, CONTENT_PATH);
             case MEDIA_ITEM:
-                return String.format(TYPE_FORMAT, mimeItem, MEDIA_URI);
+                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_ITEM_BASE_TYPE, MEDIA_PATH);
             default:
                 throw new IllegalArgumentException(unsupportedUri + uri);
         }
