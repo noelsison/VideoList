@@ -94,7 +94,7 @@ public class VideoListContentProvider extends ContentProvider {
         Cursor cursor = null;
 
         try {
-            cursor = db.query(tableName,
+            cursor = queryBuilder.query(db,
                     projection,
                     selection,
                     selectionArgs,

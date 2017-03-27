@@ -58,7 +58,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        getSupportActionBar().setShowHideAnimationEnabled(false);
 
         mediaItemId = getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
         videoHolder = (LinearLayout) findViewById(R.id.ll_video_player_holder);
