@@ -2,6 +2,7 @@ package com.example.noel.videolist.activity.main;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,13 +20,14 @@ import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 
 public class ModuleListAdapter extends BaseRecyclerListAdapter {
 
-    public ModuleListAdapter(BaseRecyclerListActivity activity, Cursor cursor, int layoutId) {
-        super(activity, cursor, layoutId);
+    public ModuleListAdapter(BaseRecyclerListActivity activity) {
+        super(activity);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflateLayout(parent);
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        View view = inflater.inflate(R.layout.item_activity_main_list, parent, false);
         return new ModuleItemViewHolder(view);
     }
 

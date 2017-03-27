@@ -17,17 +17,9 @@ public abstract class BaseRecyclerListAdapter<ActivityItemViewHolder> extends Re
 
     protected BaseRecyclerListActivity activity;
     protected Cursor cursor;
-    protected int layoutId;
 
-    public BaseRecyclerListAdapter(BaseRecyclerListActivity activity, Cursor cursor, int layoutId) {
+    public BaseRecyclerListAdapter(BaseRecyclerListActivity activity) {
         this.activity = activity;
-        this.cursor = cursor;
-        this.layoutId = layoutId;
-    }
-
-    protected View inflateLayout(ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(activity);
-        return inflater.inflate(layoutId, parent, false);
     }
 
     @Override

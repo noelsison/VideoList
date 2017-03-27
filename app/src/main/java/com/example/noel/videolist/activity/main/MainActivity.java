@@ -59,7 +59,7 @@ public class MainActivity extends BaseRecyclerListActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        adapter = new ModuleListAdapter(this, null, R.layout.item_activity_main_list);
+        adapter = new ModuleListAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Handles DB
