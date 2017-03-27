@@ -1,4 +1,4 @@
-package com.example.noel.videolist.content;
+package com.example.noel.videolist.activity.content;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -14,12 +14,12 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.noel.videolist.R;
-import com.example.noel.videolist.audio.AudioRecorderActivity;
+import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.video.VideoPlayerActivity;
+import com.example.noel.videolist.activity.video.VideoPlayerActivity;
 
 /**
  * Created by Noel on 3/6/2017.
@@ -101,7 +101,7 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
                                 VideoListContract.ContentItemEntry.COLUMN_TITLE,
                                 VideoListContract.ContentItemEntry.COLUMN_CONTENT_ID
                         },
-                        VideoListContract.ContentItemEntry.COLUM_MODULE_ID + " = ?",
+                        VideoListContract.ContentItemEntry.COLUMN_MODULE_ID + " = ?",
                         new String[] {moduleIdString},
                         VideoListContract.ContentItemEntry.COLUMN_SEQ_NUM);
             default:

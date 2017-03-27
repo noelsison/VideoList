@@ -1,4 +1,4 @@
-package com.example.noel.videolist.content;
+package com.example.noel.videolist.activity.content;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

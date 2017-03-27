@@ -88,7 +88,7 @@ public class TestUtil {
 
     private static ContentValues makeContentItemValues(Integer moduleId, Integer type, String title, Integer contentId, Integer seqNum) {
         ContentValues cv = new ContentValues();
-        cv.put(ContentItemEntry.COLUM_MODULE_ID, moduleId);
+        cv.put(ContentItemEntry.COLUMN_MODULE_ID, moduleId);
         cv.put(ContentItemEntry.COLUMN_TYPE, type);
         cv.put(ContentItemEntry.COLUMN_TITLE, title);
         cv.put(ContentItemEntry.COLUMN_CONTENT_ID, contentId);

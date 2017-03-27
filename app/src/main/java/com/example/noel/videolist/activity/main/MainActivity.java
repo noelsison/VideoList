@@ -1,4 +1,4 @@
-package com.example.noel.videolist;
+package com.example.noel.videolist.activity.main;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -12,16 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.noel.videolist.content.ContentListActivity;
+import com.example.noel.videolist.R;
+import com.example.noel.videolist.activity.content.ContentListActivity;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.splash.SplashActivity;
+import com.example.noel.videolist.activity.splash.SplashActivity;
 
 public class MainActivity extends AppCompatActivity implements ModuleListAdapter.ActivityListAdapterClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
 

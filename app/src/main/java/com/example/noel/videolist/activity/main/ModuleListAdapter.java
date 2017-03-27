@@ -1,4 +1,4 @@
-package com.example.noel.videolist;
+package com.example.noel.videolist.activity.main;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.noel.videolist.R;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 
 

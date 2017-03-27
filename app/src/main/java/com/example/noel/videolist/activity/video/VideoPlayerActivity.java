@@ -1,4 +1,4 @@
-package com.example.noel.videolist.video;
+package com.example.noel.videolist.activity.video;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
