@@ -1,6 +1,5 @@
 package com.example.noel.videolist.activity.main;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noel.videolist.R;
+import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.content.ContentListActivity;
-import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract;
 import com.example.noel.videolist.activity.splash.SplashActivity;
+import com.example.noel.videolist.data.VideoListContentProvider;
+import com.example.noel.videolist.data.VideoListContract.Model;
+import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 
-public class MainActivity extends AppCompatActivity implements ModuleListAdapter.ActivityListAdapterClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends BaseRecyclerListActivity {
 
     private final String TAG = MainActivity.class.getName();
     private static final int DB_LOADER = 0;
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        adapter = new ModuleListAdapter(this, null);
+        adapter = new ModuleListAdapter(this, null, R.layout.item_activity_main_list);
         recyclerView.setAdapter(adapter);
 
         // Handles DB
@@ -101,10 +101,11 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
     }
 
     @Override
-    public void onItemClick(int moduleId, String title) {
+    public void onItemClick(Model model) {
+        ModuleEntry moduleEntry = (ModuleEntry) model;
         Intent intent = new Intent(getApplicationContext(), ContentListActivity.class);
-        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_ID, moduleId);
-        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_TITLE, title);
+        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_ID, moduleEntry.getId());
+        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_TITLE, moduleEntry.getTitle());
         startActivity(intent);
     }
 
@@ -114,13 +115,10 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
             case DB_LOADER:
                 return new CursorLoader(this,
                         VideoListContentProvider.MODULE_URI,
-                        new String[]{
-                                VideoListContract.ModuleEntry._ID,
-                                VideoListContract.ModuleEntry.COLUMN_TITLE
-                        },
                         null,
                         null,
-                        VideoListContract.ModuleEntry._ID);
+                        null,
+                        ModuleEntry._ID);
             default:
                 return null;
         }
@@ -135,4 +133,5 @@ public class MainActivity extends AppCompatActivity implements ModuleListAdapter
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
+
 }
