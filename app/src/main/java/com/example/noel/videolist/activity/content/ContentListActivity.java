@@ -14,12 +14,12 @@ import android.widget.Toast;
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
-import com.example.noel.videolist.activity.video.VideoPlayerActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
 import com.example.noel.videolist.data.VideoListContract.Model;
+import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
+import com.example.noel.videolist.activity.video.VideoPlayerActivity;
 
 /**
  * Created by Noel on 3/6/2017.
@@ -97,9 +97,7 @@ public class ContentListActivity extends BaseRecyclerListActivity {
                 String moduleIdString = Integer.toString(moduleId);
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MODULE_URI + "/" + moduleIdString),
-                        null,
-                        ContentItemEntry.COLUMN_MODULE_ID + " = ?",
-                        new String[]{moduleIdString},
+                        null, null, null,
                         ContentItemEntry.COLUMN_SEQ_NUM);
             default:
                 return null;

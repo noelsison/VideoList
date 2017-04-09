@@ -115,9 +115,7 @@ public class MainActivity extends BaseRecyclerListActivity {
             case DB_LOADER:
                 return new CursorLoader(this,
                         VideoListContentProvider.MODULE_URI,
-                        null,
-                        null,
-                        null,
+                        null, null, null,
                         ModuleEntry._ID);
             default:
                 return null;
