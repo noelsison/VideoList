@@ -1,4 +1,4 @@
-package com.example.noel.videolist.audio;
+package com.example.noel.videolist.activity.audio;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

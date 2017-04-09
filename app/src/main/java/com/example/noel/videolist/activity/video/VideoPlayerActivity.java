@@ -1,4 +1,4 @@
-package com.example.noel.videolist.video;
+package com.example.noel.videolist.activity.video;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -185,8 +185,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemIdString),
                         new String[]{MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
-                        MediaItemEntry._ID + " = ?",
-                        new String[]{mediaItemIdString},
+                        null, null,
                         VideoListContract.MediaItemEntry.COLUMN_TITLE);
             default:
                 return null;

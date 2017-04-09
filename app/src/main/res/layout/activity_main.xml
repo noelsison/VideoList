@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    tools:context=".activity.main.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,12 +46,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/item_activity_main_list" />
-
+    <!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/margin_default"
         android:text="Resume" />
-
+    -->
 </LinearLayout>

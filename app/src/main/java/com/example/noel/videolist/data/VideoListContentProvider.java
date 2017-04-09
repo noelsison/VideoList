@@ -82,7 +82,7 @@ public class VideoListContentProvider extends ContentProvider {
                 break;
             case MODULE_CONTENT:
                 queryBuilder.setTables(ContentItemEntry.TABLE_NAME);
-                queryBuilder.appendWhere(ContentItemEntry.COLUM_MODULE_ID + " = " + uri.getLastPathSegment());
+                queryBuilder.appendWhere(ContentItemEntry.COLUMN_MODULE_ID + " = " + uri.getLastPathSegment());
                 // Use appendWhereEscapeString for user input
                 break;
             case MEDIA_ITEM:

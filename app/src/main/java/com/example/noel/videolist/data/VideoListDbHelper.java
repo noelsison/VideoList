@@ -46,7 +46,7 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
         // ContentItem Table
         final String SQL_CREATE_CONTENT_ITEM_TABLE = "CREATE TABLE " + ContentItemEntry.TABLE_NAME + " (" +
                 ContentItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ContentItemEntry.COLUM_MODULE_ID + " INTEGER NOT NULL, " +
+                ContentItemEntry.COLUMN_MODULE_ID + " INTEGER NOT NULL, " +
                 ContentItemEntry.COLUMN_TYPE + " INTEGER NOT NULL, " +
                 ContentItemEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 ContentItemEntry.COLUMN_CONTENT_ID + " INTEGER NOT NULL," +

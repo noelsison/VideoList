@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".audio.AudioRecorderActivity">
+    tools:context=".activity.audio.AudioRecorderActivity">
 
     <Button
         android:id="@+id/audio_recorder_record"
