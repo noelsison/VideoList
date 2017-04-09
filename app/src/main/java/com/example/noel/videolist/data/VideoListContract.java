@@ -46,7 +46,7 @@ public class VideoListContract {
         public final static String COLUMN_SEQ_NUM= "seqNum";
 
         private int moduleId;
-        private String type;
+        private int type;
         private String title;
         private int contentId;
         private int seqNum;
@@ -54,7 +54,7 @@ public class VideoListContract {
         public ContentItemEntry(Cursor cursor) {
             super(cursor);
             moduleId = cursor.getInt(cursor.getColumnIndex(COLUMN_MODULE_ID));
-            type = cursor.getString(cursor.getColumnIndex(COLUMN_TYPE));
+            type = cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE));
             title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
             contentId = cursor.getInt(cursor.getColumnIndex(COLUMN_CONTENT_ID));
             seqNum = cursor.getInt(cursor.getColumnIndex(COLUMN_SEQ_NUM));
@@ -64,7 +64,7 @@ public class VideoListContract {
             return moduleId;
         }
 
-        public String getType() {
+        public int getType() {
             return type;
         }
 

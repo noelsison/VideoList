@@ -1,13 +1,11 @@
 package com.example.noel.videolist.activity.content;
 
-import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +13,19 @@ import android.widget.Toast;
 
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
+import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
+import com.example.noel.videolist.activity.video.VideoPlayerActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.activity.video.VideoPlayerActivity;
+import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
+import com.example.noel.videolist.data.VideoListContract.Model;
 
 /**
  * Created by Noel on 3/6/2017.
  */
 
-public class ContentListActivity  extends AppCompatActivity implements ContentListAdapter.ActivityListAdapterClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
+public class ContentListActivity extends BaseRecyclerListActivity {
 
     private final String TAG = ContentListActivity.class.getName();
     private static final int DB_LOADER = 0;
@@ -60,7 +60,7 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        adapter = new ContentListAdapter(this, null);
+        adapter = new ContentListAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Handles DB
@@ -70,21 +70,22 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
     }
 
     @Override
-    public void onItemClick(int type, int contentId) {
+    public void onItemClick(Model model) {
+        ContentItemEntry contentItemEntry = (ContentItemEntry) model;
         Intent intent;
-        switch (type) {
+        switch (contentItemEntry.getType()) {
             case ContentType.VIDEO:
                 intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
-                intent.putExtra(VideoPlayerActivity.INTENT_EXTRA_ID, contentId);
+                intent.putExtra(VideoPlayerActivity.INTENT_EXTRA_ID, contentItemEntry.getContentId());
                 startActivity(intent);
                 break;
             case ContentType.AUDIO_RECORD:
-                intent =  new Intent(getApplicationContext(), AudioRecorderActivity.class);
+                intent = new Intent(getApplicationContext(), AudioRecorderActivity.class);
                 startActivity(intent);
                 break;
             default:
                 Toast.makeText(this, String.format("Content contentId %d of contentType %s not supported",
-                        contentId, DbConstants.ContentType.toString(type)), Toast.LENGTH_SHORT).show();
+                        contentItemEntry.getContentId(), DbConstants.ContentType.toString(contentItemEntry.getType())), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -96,14 +97,10 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
                 String moduleIdString = Integer.toString(moduleId);
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MODULE_URI + "/" + moduleIdString),
-                        new String[]{
-                                VideoListContract.ContentItemEntry.COLUMN_TYPE,
-                                VideoListContract.ContentItemEntry.COLUMN_TITLE,
-                                VideoListContract.ContentItemEntry.COLUMN_CONTENT_ID
-                        },
-                        VideoListContract.ContentItemEntry.COLUMN_MODULE_ID + " = ?",
-                        new String[] {moduleIdString},
-                        VideoListContract.ContentItemEntry.COLUMN_SEQ_NUM);
+                        null,
+                        ContentItemEntry.COLUMN_MODULE_ID + " = ?",
+                        new String[]{moduleIdString},
+                        ContentItemEntry.COLUMN_SEQ_NUM);
             default:
                 return null;
         }
@@ -118,4 +115,5 @@ public class ContentListActivity  extends AppCompatActivity implements ContentLi
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
+
 }

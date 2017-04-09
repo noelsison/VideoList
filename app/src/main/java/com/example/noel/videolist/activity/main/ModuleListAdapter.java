@@ -1,6 +1,5 @@
 package com.example.noel.videolist.activity.main;
 
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListAdapter;
-import com.example.noel.videolist.data.VideoListContract;
+import com.example.noel.videolist.data.VideoListContract.Model;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 
 
@@ -34,8 +33,6 @@ public class ModuleListAdapter extends BaseRecyclerListAdapter {
     class ModuleItemViewHolder extends ActivityItemViewHolder {
 
         TextView moduleTitle;
-        String title;
-        int moduleId;
 
         public ModuleItemViewHolder(View itemView) {
             super(itemView);
@@ -45,13 +42,12 @@ public class ModuleListAdapter extends BaseRecyclerListAdapter {
 
         @Override
         protected void onBind() {
-            moduleId = cursor.getInt(cursor.getColumnIndex(ModuleEntry._ID));
-            title = cursor.getString(cursor.getColumnIndex(ModuleEntry.COLUMN_TITLE));
+            String title = cursor.getString(cursor.getColumnIndex(ModuleEntry.COLUMN_TITLE));
             moduleTitle.setText(title);
         }
 
         @Override
-        protected VideoListContract.Model createModel() {
+        protected Model createModel() {
             return new ModuleEntry(cursor);
         }
     }
