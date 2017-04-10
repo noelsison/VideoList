@@ -58,10 +58,13 @@ public class TestUtil {
         List<ContentValues> list = new ArrayList<ContentValues>();
 
         // Fake ContentItem entries
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson: Proper Attire", 1, 1));
-        list.add(makeContentItemValues(2, ContentType.VIDEO, "Lesson: Common Interview Questions", 2, 1));
-        list.add(makeContentItemValues(2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", 1, 2));
-        list.add(makeContentItemValues(3, ContentType.VIDEO, "Lesson: Formatting Slides", 3, 1));
+        list.add(makeContentItemValues(1, ContentType.IMAGE, "Comics: Shorts", 4, 1));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson: Proper Attire", 1, 2));
+        list.add(makeContentItemValues(2, ContentType.IMAGE, "Comics: Worst Interview", 5, 1));
+        list.add(makeContentItemValues(2, ContentType.VIDEO, "Lesson: Common Interview Questions", 2, 2));
+        list.add(makeContentItemValues(2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", 1, 3));
+        list.add(makeContentItemValues(3, ContentType.IMAGE, "Comics: Stuttering", 6, 1));
+        list.add(makeContentItemValues(3, ContentType.VIDEO, "Lesson: Formatting Slides", 3, 2));
 
         makeDbTransactions(db, ContentEntry.TABLE_NAME, list);
     }
@@ -72,6 +75,9 @@ public class TestUtil {
         list.add(makeMediaItemValues(1, "Big Buck Bunny", "big_buck_bunny"));
         list.add(makeMediaItemValues(2, "Cosmos Laundromat Trailer", "cosmos_laundromat_trailer"));
         list.add(makeMediaItemValues(3, "Sintel Trailer", "sintel_trailer"));
+        list.add(makeMediaItemValues(4, "Wifi Password: Approach", "ce_s04_01.jpg"));
+        list.add(makeMediaItemValues(5, "Wifi Password: Decision", "ce_s04_02.jpg"));
+        list.add(makeMediaItemValues(6, "Wifi Password: Hope", "ce_s04_03.jpg"));
 
         makeDbTransactions(db, MediaEntry.TABLE_NAME, list);
     }

@@ -9,6 +9,7 @@ public class DbConstants {
     public static final class ContentType {
         public final static int VIDEO = 1;
         public final static int AUDIO_RECORD  = 2;
+        public final static int IMAGE = 3;
 
         public static String toString(int type) {
             switch (type) {
