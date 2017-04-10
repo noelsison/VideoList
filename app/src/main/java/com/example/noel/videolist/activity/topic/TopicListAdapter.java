@@ -1,4 +1,4 @@
-package com.example.noel.videolist.activity.content;
+package com.example.noel.videolist.activity.topic;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,16 +9,16 @@ import android.widget.TextView;
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListAdapter;
-import com.example.noel.videolist.data.VideoListContract.ContentEntry;
 import com.example.noel.videolist.data.VideoListContract.Model;
+import com.example.noel.videolist.data.VideoListContract.TopicEntry;
 
 /**
- * Created by Noel on 4/9/2017.
+ * Created by Noel on 4/10/2017.
  */
 
-public class ContentListAdapter extends BaseRecyclerListAdapter {
+public class TopicListAdapter extends BaseRecyclerListAdapter {
 
-    public ContentListAdapter(BaseRecyclerListActivity activity) {
+    public TopicListAdapter(BaseRecyclerListActivity activity) {
         super(activity);
     }
 
@@ -26,14 +26,14 @@ public class ContentListAdapter extends BaseRecyclerListAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.item_content_list, parent, false);
-        return new ContentItemViewHolder(view);
+        return new TopicItemViewHolder(view);
     }
 
-    class ContentItemViewHolder extends ActivityItemViewHolder {
+    class TopicItemViewHolder extends ActivityItemViewHolder {
 
         TextView contentTitle;
 
-        public ContentItemViewHolder(View itemView) {
+        public TopicItemViewHolder(View itemView) {
             super(itemView);
             contentTitle = (TextView) itemView.findViewById(R.id.tv_content_list_item_title);
             itemView.setOnClickListener(this);
@@ -41,13 +41,13 @@ public class ContentListAdapter extends BaseRecyclerListAdapter {
 
         @Override
         protected void onBind() {
-            String title = cursor.getString(cursor.getColumnIndex(ContentEntry.COLUMN_TITLE));
+            String title = cursor.getString(cursor.getColumnIndex(TopicEntry.COLUMN_TITLE));
             contentTitle.setText(title);
         }
 
         @Override
         protected Model createModel() {
-            return new ContentEntry(cursor);
+            return new TopicEntry(cursor);
         }
     }
 }

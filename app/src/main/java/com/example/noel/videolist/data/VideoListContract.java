@@ -37,31 +37,61 @@ public class VideoListContract {
         }
     }
 
-    public static final class ContentItemEntry extends Model {
-        public final static String TABLE_NAME = "contentItem";
-        public final static String COLUMN_MODULE_ID = "moduleId";
+    public static final class TopicEntry extends Model {
+        public final static String TABLE_NAME = "topic";
+        public final static String COLUMN_MODULE_ID = "topicId";
+        public final static String COLUMN_TITLE = "title";
+        public final static String COLUMN_SEQ_NUM = "seqNum";
+
+        private int moduleId;
+        private String title;
+        private int seqNum;
+
+        public TopicEntry(Cursor cursor) {
+            super(cursor);
+            moduleId = cursor.getInt(cursor.getColumnIndex(COLUMN_MODULE_ID));
+            title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+            seqNum = cursor.getInt(cursor.getColumnIndex(COLUMN_SEQ_NUM));
+        }
+
+        public int getModuleId() {
+            return moduleId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public int getSeqNum() {
+            return seqNum;
+        }
+    }
+
+    public static final class ContentEntry extends Model {
+        public final static String TABLE_NAME = "content";
+        public final static String COLUMN_TOPIC_ID = "topicId";
         public final static String COLUMN_TYPE = "type";
         public final static String COLUMN_TITLE = "title";
         public final static String COLUMN_CONTENT_ID = "contentId";
-        public final static String COLUMN_SEQ_NUM= "seqNum";
+        public final static String COLUMN_SEQ_NUM = "seqNum";
 
-        private int moduleId;
+        private int topicId;
         private int type;
         private String title;
         private int contentId;
         private int seqNum;
 
-        public ContentItemEntry(Cursor cursor) {
+        public ContentEntry(Cursor cursor) {
             super(cursor);
-            moduleId = cursor.getInt(cursor.getColumnIndex(COLUMN_MODULE_ID));
+            topicId = cursor.getInt(cursor.getColumnIndex(COLUMN_TOPIC_ID));
             type = cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE));
             title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
             contentId = cursor.getInt(cursor.getColumnIndex(COLUMN_CONTENT_ID));
             seqNum = cursor.getInt(cursor.getColumnIndex(COLUMN_SEQ_NUM));
         }
 
-        public int getModuleId() {
-            return moduleId;
+        public int getTopicId() {
+            return topicId;
         }
 
         public int getType() {
@@ -81,15 +111,15 @@ public class VideoListContract {
         }
     }
 
-    public static final class MediaItemEntry extends Model {
-        public final static String TABLE_NAME = "mediaItem";
+    public static final class MediaEntry extends Model {
+        public final static String TABLE_NAME = "media";
         public final static String COLUMN_TITLE = "title";
         public final static String COLUMN_FILENAME = "filename";
 
         private String title;
         private String filename;
 
-        public MediaItemEntry (Cursor cursor) {
+        public MediaEntry(Cursor cursor) {
             super(cursor);
             title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
             filename = cursor.getString(cursor.getColumnIndex(COLUMN_FILENAME));

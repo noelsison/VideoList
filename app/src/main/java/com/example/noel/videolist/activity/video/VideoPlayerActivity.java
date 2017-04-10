@@ -23,8 +23,7 @@ import android.widget.VideoView;
 
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 
 public class VideoPlayerActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -184,9 +183,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 String mediaItemIdString = Integer.toString(mediaItemId);
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemIdString),
-                        new String[]{MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
+                        new String[]{MediaEntry.COLUMN_TITLE, MediaEntry.COLUMN_FILENAME},
                         null, null,
-                        VideoListContract.MediaItemEntry.COLUMN_TITLE);
+                        MediaEntry.COLUMN_TITLE);
             default:
                 return null;
         }
@@ -195,8 +194,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        String title = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_TITLE));
-        String filename = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_FILENAME));
+        String title = data.getString(data.getColumnIndex(MediaEntry.COLUMN_TITLE));
+        String filename = data.getString(data.getColumnIndex(MediaEntry.COLUMN_FILENAME));
         getSupportActionBar().setTitle(title);
         playVideo(filename);
     }
