@@ -12,9 +12,10 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
-import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.ContentEntry;
+import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
+import com.example.noel.videolist.data.VideoListContract.TopicEntry;
 
 /**
  * Created by Noel on 2/27/2017.
@@ -25,20 +26,24 @@ public class VideoListContentProvider extends ContentProvider {
     private static final String TAG = VideoListContentProvider.class.getName();
 
     private static final int MODULE_ALL = 1;
-    private static final int MODULE_CONTENT = 2;
-    private static final int CONTENT_ALL = 3;
-    private static final int CONTENT_ITEM = 4;
-    private static final int MEDIA_ALL = 5;
-    private static final int MEDIA_ITEM = 6;
+    private static final int MODULE_TOPIC = 2;
+    private static final int TOPIC_ALL = 3;
+    private static final int TOPIC_CONTENT = 4;
+    private static final int CONTENT_ALL = 5;
+    private static final int CONTENT_ITEM = 6;
+    private static final int MEDIA_ALL = 7;
+    private static final int MEDIA_ITEM = 8;
 
     private static final String AUTHORITY = "com.example.noel.videolist";
 
     private static final String MODULE_PATH = "module";
+    private static final String TOPIC_PATH = "topic";
     private static final String CONTENT_PATH = "content";
     private static final String MEDIA_PATH = "media";
 
     // Public URIs
     public static final Uri MODULE_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, MODULE_PATH));
+    public static final Uri TOPIC_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, TOPIC_PATH));
     public static final Uri CONTENT_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, CONTENT_PATH));
     public static final Uri MEDIA_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, MEDIA_PATH));
 
@@ -50,7 +55,9 @@ public class VideoListContentProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, MODULE_PATH, MODULE_ALL);
-        uriMatcher.addURI(AUTHORITY, MODULE_PATH + "/#", MODULE_CONTENT);
+        uriMatcher.addURI(AUTHORITY, MODULE_PATH + "/#", MODULE_TOPIC);
+        uriMatcher.addURI(AUTHORITY, TOPIC_PATH, TOPIC_ALL);
+        uriMatcher.addURI(AUTHORITY, TOPIC_PATH + "/#", TOPIC_CONTENT);
         uriMatcher.addURI(AUTHORITY, CONTENT_PATH, CONTENT_ALL);
         uriMatcher.addURI(AUTHORITY, CONTENT_PATH + "/#", CONTENT_ITEM);
         uriMatcher.addURI(AUTHORITY, MEDIA_PATH, MEDIA_ALL);
@@ -80,13 +87,18 @@ public class VideoListContentProvider extends ContentProvider {
             case MODULE_ALL:
                 queryBuilder.setTables(ModuleEntry.TABLE_NAME);
                 break;
-            case MODULE_CONTENT:
-                queryBuilder.setTables(ContentItemEntry.TABLE_NAME);
-                queryBuilder.appendWhere(ContentItemEntry.COLUMN_MODULE_ID + " = " + uri.getLastPathSegment());
+            case MODULE_TOPIC:
+                queryBuilder.setTables(TopicEntry.TABLE_NAME);
+                queryBuilder.appendWhere(TopicEntry.COLUMN_MODULE_ID + " = " + uri.getLastPathSegment());
+                // Use appendWhereEscapeString for user input
+                break;
+            case TOPIC_CONTENT:
+                queryBuilder.setTables(ContentEntry.TABLE_NAME);
+                queryBuilder.appendWhere(ContentEntry.COLUMN_TOPIC_ID + " = " + uri.getLastPathSegment());
                 // Use appendWhereEscapeString for user input
                 break;
             case MEDIA_ITEM:
-                queryBuilder.setTables(MediaItemEntry.TABLE_NAME);
+                queryBuilder.setTables(MediaEntry.TABLE_NAME);
                 queryBuilder.appendWhere("_ID = " + uri.getLastPathSegment());
                 break;
         }
@@ -114,10 +126,10 @@ public class VideoListContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case MODULE_ALL:
                 return String.format(TYPE_FORMAT, ContentResolver.CURSOR_DIR_BASE_TYPE, MODULE_PATH);
-            case MODULE_CONTENT:
+            case MODULE_TOPIC:
                 return String.format(TYPE_FORMAT, ContentResolver.CURSOR_ITEM_BASE_TYPE, MODULE_PATH);
-            case CONTENT_ALL:
-                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_DIR_BASE_TYPE, CONTENT_PATH);
+            case TOPIC_CONTENT:
+                return String.format(TYPE_FORMAT, ContentResolver.CURSOR_DIR_BASE_TYPE, TOPIC_PATH);
             case MEDIA_ITEM:
                 return String.format(TYPE_FORMAT, ContentResolver.CURSOR_ITEM_BASE_TYPE, MEDIA_PATH);
             default:

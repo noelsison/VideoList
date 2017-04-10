@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
-import com.example.noel.videolist.activity.content.ContentListActivity;
 import com.example.noel.videolist.activity.splash.SplashActivity;
+import com.example.noel.videolist.activity.topic.TopicListActivity;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract.Model;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
@@ -103,9 +103,9 @@ public class MainActivity extends BaseRecyclerListActivity {
     @Override
     public void onItemClick(Model model) {
         ModuleEntry moduleEntry = (ModuleEntry) model;
-        Intent intent = new Intent(getApplicationContext(), ContentListActivity.class);
-        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_ID, moduleEntry.getId());
-        intent.putExtra(ContentListActivity.INTENT_EXTRA_MODULE_TITLE, moduleEntry.getTitle());
+        Intent intent = new Intent(getApplicationContext(), TopicListActivity.class);
+        intent.putExtra(TopicListActivity.INTENT_EXTRA_MODULE_ID, moduleEntry.getId());
+        intent.putExtra(TopicListActivity.INTENT_EXTRA_MODULE_TITLE, moduleEntry.getTitle());
         startActivity(intent);
     }
 

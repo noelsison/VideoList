@@ -20,12 +20,19 @@
         <activity android:name=".activity.splash.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".activity.content.ContentListActivity"
+        <activity android:name=".activity.topic.TopicListActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".activity.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.activity.main.MainActivity" />
+        </activity>
+        <activity android:name=".activity.content.ContentListActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.topic.TopicListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.noel.videolist.activity.topic.TopicListActivity" />
         </activity>
         <activity android:name=".activity.video.VideoPlayerActivity"
             android:configChanges="orientation|screenSize"
