@@ -34,6 +34,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.noel.videolist.activity.topic.TopicListActivity" />
         </activity>
+        <activity android:name=".activity.comics.ComicsActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".activity.content.ContentListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.content.ContentListActivity" />
+        </activity>
         <activity android:name=".activity.video.VideoPlayerActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".activity.content.ContentListActivity">

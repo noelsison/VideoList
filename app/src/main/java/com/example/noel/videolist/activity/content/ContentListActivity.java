@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
+import com.example.noel.videolist.activity.comics.ComicsActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
@@ -81,6 +82,11 @@ public class ContentListActivity extends BaseRecyclerListActivity {
                 break;
             case ContentType.AUDIO_RECORD:
                 intent = new Intent(getApplicationContext(), AudioRecorderActivity.class);
+                startActivity(intent);
+                break;
+            case ContentType.IMAGE:
+                intent = new Intent(getApplicationContext(), ComicsActivity.class);
+                intent.putExtra(ComicsActivity.INTENT_EXTRA_ID, contentItemEntry.getContentId());
                 startActivity(intent);
                 break;
             default:
