@@ -9,9 +9,14 @@
         android:id="@+id/interview_practice_tv_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/dummy"
+        android:textSize="@dimen/text_size_medium" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/interview_practice_b_replay"
@@ -20,11 +25,11 @@
         android:orientation="horizontal"
         android:padding="@dimen/padding_default">
 
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:contentDescription="@string/interview_practice_recording"
             android:src="@drawable/ic_record_voice_over" />
 
         <ProgressBar

@@ -11,4 +11,5 @@
     <dimen name="text_size_splash_greeting">24sp</dimen>
     <dimen name="text_spacing_splash">10sp</dimen>
     <dimen name="text_spacing_dummy">15sp</dimen>
+    <dimen name="text_size_medium">24sp</dimen>
 </resources>
