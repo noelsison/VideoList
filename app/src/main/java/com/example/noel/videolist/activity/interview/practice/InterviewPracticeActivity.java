@@ -7,6 +7,7 @@ import android.speech.tts.UtteranceProgressListener;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.noel.videolist.R;
@@ -26,6 +27,7 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
     TTSPlayer ttsPlayer;
 
     TextView textViewQuestion;
+    ProgressBar progressBarRecordVolume;
     Button buttonReplay;
     Button buttonNext;
 
