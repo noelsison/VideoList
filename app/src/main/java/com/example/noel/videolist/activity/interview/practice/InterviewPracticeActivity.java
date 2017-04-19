@@ -21,6 +21,8 @@ import java.util.Locale;
 
 public class InterviewPracticeActivity extends BaseInterviewActivity {
 
+    // TODO: Create a controller class that handles the interview practice gameplay
+
     TTSPlayer ttsPlayer;
 
     TextView textViewQuestion;
@@ -40,7 +42,8 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
         ttsPlayer = new TTSPlayer(getApplicationContext(), this);
 
         textViewQuestion = (TextView) findViewById(R.id.interview_practice_tv_question);
-        textViewQuestion.setText(" What is your greatest achievement?");
+        // TODO: Fetch this from database
+        textViewQuestion.setText("What is your greatest achievement?");
 
         initButtons();
         playQuestion();
@@ -55,6 +58,12 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
             }
         });
         buttonNext = (Button) findViewById(R.id.interview_practice_b_next);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Save current audio recording and proceed to next question
+            }
+        });
 
         setButtonsEnabled(false);
     }
@@ -74,6 +83,9 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
     }
 
     private void playQuestion() {
+        if (isQuestionPlaying()) {
+            return;
+        }
         setButtonsEnabled(false);
         String text = textViewQuestion.getText().toString();
         // TODO: Evaluate if sound file is null
@@ -88,9 +100,7 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
 
     @Override
     public void onFinishLoading() {
-        if (!isQuestionPlaying()) {
-            playQuestion();
-        }
+        playQuestion();
     }
 
     @Override
