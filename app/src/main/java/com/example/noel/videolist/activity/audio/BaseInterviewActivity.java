@@ -2,8 +2,6 @@ package com.example.noel.videolist.activity.audio;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,16 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 /**
  * Created by Noel on 4/19/2017.
  */
 
-public abstract class BaseInterviewActivity extends AppCompatActivity implements AudioPlayer.MediaPlayerListener {
+public abstract class BaseInterviewActivity extends AppCompatActivity implements AudioPlayer.MediaPlayerListener, AudioRecorder.AudioRecorderListener {
 
     private static final String TAG = AudioRecorderActivity.class.getName();
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 200;
@@ -43,7 +38,7 @@ public abstract class BaseInterviewActivity extends AppCompatActivity implements
 
         requestForPermission();
         audioPlayer = new AudioPlayer(this);
-        audioRecorder = new AudioRecorder();
+        audioRecorder = new AudioRecorder(this);
     }
 
     private void requestForPermission() {

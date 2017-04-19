@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -21,6 +22,9 @@ import java.util.Locale;
  */
 
 public class InterviewPracticeActivity extends BaseInterviewActivity {
+
+    private static final String TAG = InterviewPracticeActivity.class.getName();
+    private static final int MAX_AMPLITUDE = 30000;
 
     // TODO: Create a controller class that handles the interview practice gameplay
 
@@ -44,8 +48,10 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
         ttsPlayer = new TTSPlayer(getApplicationContext(), this);
 
         textViewQuestion = (TextView) findViewById(R.id.interview_practice_tv_question);
+        progressBarRecordVolume = (ProgressBar) findViewById(R.id.interview_practice_pb_recording_level);
         // TODO: Fetch this from database
         textViewQuestion.setText("What is your greatest achievement?");
+        progressBarRecordVolume.setMax(MAX_AMPLITUDE);
 
         initButtons();
         playQuestion();
@@ -64,6 +70,7 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
             @Override
             public void onClick(View v) {
                 // TODO: Save current audio recording and proceed to next question
+                audioRecorder.stopRecording();
             }
         });
 
@@ -75,6 +82,8 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
             @Override
             public void run() {
                 setButtonsEnabled(true);
+                // TODO: Replace with generated name
+                audioRecorder.startRecording(getExternalCacheDir().getAbsolutePath() + "/audiorecordtest.3gp");
             }
         };
     }
@@ -114,5 +123,10 @@ public class InterviewPracticeActivity extends BaseInterviewActivity {
     protected void onDestroy() {
         super.onDestroy();
         ttsPlayer.dispose();
+    }
+
+    @Override
+    public void updateAmplitude(int amplitude) {
+        progressBarRecordVolume.setProgress(amplitude);
     }
 }

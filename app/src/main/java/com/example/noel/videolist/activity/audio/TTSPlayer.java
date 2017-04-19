@@ -32,7 +32,6 @@ public class TTSPlayer extends UtteranceProgressListener {
                 mediaPlayerListener.onFinishLoading();
 
                 textToSpeech.setOnUtteranceProgressListener(ttsPlayer);
-
             }
         });
     }

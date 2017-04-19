@@ -20,19 +20,21 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
         this.mediaPlayerListener = mediaPlayerListener;
     }
 
-    protected void startPlaying(String filename) {
+    public void startPlaying(String filename) {
         try {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setOnCompletionListener(this);
             mediaPlayer.setDataSource(filename);
             mediaPlayer.prepare();
             mediaPlayer.start();
+            isPlaying = true;
         } catch (IOException e) {
             Log.e(TAG, "Play failed");
         }
     }
 
-    protected void stopPlaying() {
+    public void stopPlaying() {
+        isPlaying = false;
         mediaPlayer.release();
         mediaPlayer = null;
     }
