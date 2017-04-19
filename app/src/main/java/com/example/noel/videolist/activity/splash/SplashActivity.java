@@ -1,4 +1,4 @@
-package com.example.noel.videolist.splash;
+package com.example.noel.videolist.activity.splash;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.noel.videolist.MainActivity;
+import com.example.noel.videolist.activity.main.MainActivity;
 import com.example.noel.videolist.R;
 
 /**

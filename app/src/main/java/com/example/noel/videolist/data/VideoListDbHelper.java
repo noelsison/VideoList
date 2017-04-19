@@ -6,8 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
-import com.example.noel.videolist.data.VideoListContract.ContentItemEntry;
-import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.TopicEntry;
+import com.example.noel.videolist.data.VideoListContract.ContentEntry;
+import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 
 /**
  * Created by Noel on 2/13/2017.
@@ -16,7 +17,7 @@ import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
 public class VideoListDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "videoList.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     private static VideoListDbHelper instance;
 
@@ -43,23 +44,33 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
         Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_MODULE_TABLE);
         db.execSQL(SQL_CREATE_MODULE_TABLE);
 
+        // TopicEntry Table
+        final String SQL_CREATE_TOPIC_ITEM_TABLE = "CREATE TABLE " + TopicEntry.TABLE_NAME + " (" +
+                TopicEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TopicEntry.COLUMN_MODULE_ID + " INTEGER NOT NULL, " +
+                TopicEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                TopicEntry.COLUMN_SEQ_NUM + " INTEGER NOT NULL" +
+                " ); ";
+        Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_TOPIC_ITEM_TABLE);
+        db.execSQL(SQL_CREATE_TOPIC_ITEM_TABLE);
+
         // ContentItem Table
-        final String SQL_CREATE_CONTENT_ITEM_TABLE = "CREATE TABLE " + ContentItemEntry.TABLE_NAME + " (" +
-                ContentItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ContentItemEntry.COLUM_MODULE_ID + " INTEGER NOT NULL, " +
-                ContentItemEntry.COLUMN_TYPE + " INTEGER NOT NULL, " +
-                ContentItemEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                ContentItemEntry.COLUMN_CONTENT_ID + " INTEGER NOT NULL," +
-                ContentItemEntry.COLUMN_SEQ_NUM + " INTEGER NOT NULL" +
+        final String SQL_CREATE_CONTENT_ITEM_TABLE = "CREATE TABLE " + ContentEntry.TABLE_NAME + " (" +
+                ContentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContentEntry.COLUMN_TOPIC_ID + " INTEGER NOT NULL, " +
+                ContentEntry.COLUMN_TYPE + " INTEGER NOT NULL, " +
+                ContentEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                ContentEntry.COLUMN_CONTENT_ID + " INTEGER NOT NULL," +
+                ContentEntry.COLUMN_SEQ_NUM + " INTEGER NOT NULL" +
                 " ); ";
         Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_CONTENT_ITEM_TABLE);
         db.execSQL(SQL_CREATE_CONTENT_ITEM_TABLE);
 
         // MediaItem Table
-        final String SQL_CREATE_MEDIA_ITEM_TABLE = "CREATE TABLE " + MediaItemEntry.TABLE_NAME + " (" +
-                MediaItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                MediaItemEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                MediaItemEntry.COLUMN_FILENAME + " TEXT NOT NULL" +
+        final String SQL_CREATE_MEDIA_ITEM_TABLE = "CREATE TABLE " + MediaEntry.TABLE_NAME + " (" +
+                MediaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MediaEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                MediaEntry.COLUMN_FILENAME + " TEXT NOT NULL" +
                 " ); ";
         Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_MEDIA_ITEM_TABLE);
         db.execSQL(SQL_CREATE_MEDIA_ITEM_TABLE);
@@ -69,8 +80,8 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: Change to use proper migration
         db.execSQL("DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + ContentItemEntry.TABLE_NAME + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + MediaItemEntry.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + ContentEntry.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + MediaEntry.TABLE_NAME + ";");
         onCreate(db);
     }
 }

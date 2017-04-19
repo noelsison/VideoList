@@ -7,7 +7,8 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.noel.videolist.splash.SplashActivity;
+import com.example.noel.videolist.activity.main.MainActivity;
+import com.example.noel.videolist.activity.splash.SplashActivity;
 import com.example.noel.videolist.utils.ToastMatcher;
 
 import org.junit.Rule;

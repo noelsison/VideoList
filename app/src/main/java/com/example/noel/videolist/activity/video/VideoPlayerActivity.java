@@ -1,4 +1,4 @@
-package com.example.noel.videolist.video;
+package com.example.noel.videolist.activity.video;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -23,8 +23,7 @@ import android.widget.VideoView;
 
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract;
-import com.example.noel.videolist.data.VideoListContract.MediaItemEntry;
+import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 
 public class VideoPlayerActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -58,7 +57,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        getSupportActionBar().setShowHideAnimationEnabled(false);
 
         mediaItemId = getIntent().getIntExtra(INTENT_EXTRA_ID, 0);
         videoHolder = (LinearLayout) findViewById(R.id.ll_video_player_holder);
@@ -66,7 +64,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
         videoView = (VideoView) findViewById(R.id.vv_video_player);
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
-        fullScreenToast = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_SHORT);
+        fullScreenToast = Toast.makeText(this, FULLSCREEN_PROMPT, Toast.LENGTH_LONG);
         fullScreenToast.setGravity(Gravity.TOP, 0, 0);
 
         initLayoutChanger();
@@ -185,10 +183,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
                 String mediaItemIdString = Integer.toString(mediaItemId);
                 return new CursorLoader(this,
                         Uri.parse(VideoListContentProvider.MEDIA_URI + "/" + mediaItemIdString),
-                        new String[]{MediaItemEntry.COLUMN_TITLE, MediaItemEntry.COLUMN_FILENAME},
-                        MediaItemEntry._ID + " = ?",
-                        new String[]{mediaItemIdString},
-                        VideoListContract.MediaItemEntry.COLUMN_TITLE);
+                        new String[]{MediaEntry.COLUMN_TITLE, MediaEntry.COLUMN_FILENAME},
+                        null, null,
+                        MediaEntry.COLUMN_TITLE);
             default:
                 return null;
         }
@@ -197,8 +194,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        String title = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_TITLE));
-        String filename = data.getString(data.getColumnIndex(MediaItemEntry.COLUMN_FILENAME));
+        String title = data.getString(data.getColumnIndex(MediaEntry.COLUMN_TITLE));
+        String filename = data.getString(data.getColumnIndex(MediaEntry.COLUMN_FILENAME));
         getSupportActionBar().setTitle(title);
         playVideo(filename);
     }

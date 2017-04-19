@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".video.VideoPlayerActivity">
+    tools:context=".activity.video.VideoPlayerActivity">
 
     <LinearLayout
         android:id="@+id/ll_video_player_holder"

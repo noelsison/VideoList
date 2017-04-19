@@ -11,34 +11,48 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".splash.SplashActivity"
+        <activity android:name=".activity.splash.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        <activity android:name=".content.ContentListActivity"
+        <activity android:name=".activity.topic.TopicListActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activity.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.noel.videolist.MainActivity" />
+                android:value="com.example.noel.videolist.activity.main.MainActivity" />
         </activity>
-        <activity android:name=".video.VideoPlayerActivity"
+        <activity android:name=".activity.content.ContentListActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.topic.TopicListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.noel.videolist.activity.topic.TopicListActivity" />
+        </activity>
+        <activity android:name=".activity.comics.ComicsActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".content.ContentListActivity">
+            android:parentActivityName=".activity.content.ContentListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.noel.videolist.content.ContentListActivity" />
+                android:value=".activity.content.ContentListActivity" />
         </activity>
-        <activity android:name=".audio.AudioRecorderActivity"
-            android:parentActivityName=".content.ContentListActivity">
+        <activity android:name=".activity.video.VideoPlayerActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".activity.content.ContentListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.noel.videolist.content.ContentListActivity" />
+                android:value=".activity.content.ContentListActivity" />
+        </activity>
+        <activity android:name=".activity.audio.AudioRecorderActivity"
+            android:parentActivityName=".activity.content.ContentListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.content.ContentListActivity" />
         </activity>
         <provider
             android:authorities="com.example.noel.videolist"
