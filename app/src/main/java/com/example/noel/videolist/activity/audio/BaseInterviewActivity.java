@@ -29,8 +29,8 @@ public abstract class BaseInterviewActivity extends AppCompatActivity implements
 
     final String PERMISSION_REQUIRED = "Permission to Record Audio is required to continue";
 
-    AudioPlayer audioPlayer;
-    AudioRecorder audioRecorder;
+    protected AudioPlayer audioPlayer;
+    protected AudioRecorder audioRecorder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

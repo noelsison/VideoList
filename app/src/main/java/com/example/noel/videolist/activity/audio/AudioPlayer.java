@@ -47,6 +47,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     interface MediaPlayerListener {
+        void onFinishLoading();
         void onFinishPlaying();
     }
 }
