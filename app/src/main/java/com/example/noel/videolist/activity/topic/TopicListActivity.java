@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.content.ContentListActivity;
+import com.example.noel.videolist.activity.list.NestedListAdapter;
 import com.example.noel.videolist.data.VideoListContentProvider;
 import com.example.noel.videolist.data.VideoListContract.Model;
 import com.example.noel.videolist.data.VideoListContract.TopicEntry;
@@ -30,7 +31,7 @@ public class TopicListActivity extends BaseRecyclerListActivity {
     public static final String INTENT_EXTRA_MODULE_TITLE = "MODULE_TITLE";
 
     RecyclerView recyclerView;
-    TopicListAdapter adapter;
+    NestedListAdapter adapter;
 
     int moduleId;
     String moduleTitle;
@@ -56,7 +57,7 @@ public class TopicListActivity extends BaseRecyclerListActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        adapter = new TopicListAdapter(this);
+        adapter = new NestedListAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Handles DB

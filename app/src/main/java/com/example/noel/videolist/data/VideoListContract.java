@@ -39,7 +39,7 @@ public class VideoListContract {
 
     public static final class TopicEntry extends Model {
         public final static String TABLE_NAME = "topic";
-        public final static String COLUMN_MODULE_ID = "topicId";
+        public final static String COLUMN_MODULE_ID = "moduleId";
         public final static String COLUMN_TITLE = "title";
         public final static String COLUMN_SEQ_NUM = "seqNum";
 
@@ -72,12 +72,14 @@ public class VideoListContract {
         public final static String COLUMN_TOPIC_ID = "topicId";
         public final static String COLUMN_TYPE = "type";
         public final static String COLUMN_TITLE = "title";
+        public final static String COLUMN_COVER_ART_PATH = "coverArtPath";
         public final static String COLUMN_CONTENT_ID = "contentId";
         public final static String COLUMN_SEQ_NUM = "seqNum";
 
         private int topicId;
         private int type;
         private String title;
+        private String coverArtPath;
         private int contentId;
         private int seqNum;
 
@@ -86,6 +88,7 @@ public class VideoListContract {
             topicId = cursor.getInt(cursor.getColumnIndex(COLUMN_TOPIC_ID));
             type = cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE));
             title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+            coverArtPath = cursor.getString(cursor.getColumnIndex(COLUMN_COVER_ART_PATH));
             contentId = cursor.getInt(cursor.getColumnIndex(COLUMN_CONTENT_ID));
             seqNum = cursor.getInt(cursor.getColumnIndex(COLUMN_SEQ_NUM));
         }
@@ -100,6 +103,10 @@ public class VideoListContract {
 
         public String getTitle() {
             return title;
+        }
+
+        public String getCoverArtPath() {
+            return coverArtPath;
         }
 
         public int getContentId() {

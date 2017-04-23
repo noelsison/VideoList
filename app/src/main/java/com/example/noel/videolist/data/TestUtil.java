@@ -58,13 +58,13 @@ public class TestUtil {
         List<ContentValues> list = new ArrayList<ContentValues>();
 
         // Fake ContentItem entries
-        list.add(makeContentItemValues(1, ContentType.IMAGE, "Comics: Shorts", 4, 1));
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson: Proper Attire", 1, 2));
-        list.add(makeContentItemValues(2, ContentType.IMAGE, "Comics: Worst Interview", 5, 1));
-        list.add(makeContentItemValues(2, ContentType.VIDEO, "Lesson: Common Interview Questions", 2, 2));
-        list.add(makeContentItemValues(2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", 1, 3));
-        list.add(makeContentItemValues(3, ContentType.IMAGE, "Comics: Stuttering", 6, 1));
-        list.add(makeContentItemValues(3, ContentType.VIDEO, "Lesson: Formatting Slides", 3, 2));
+        list.add(makeContentItemValues(1, ContentType.IMAGE, "Comics: Shorts", "c_shorts.jpg", 4, 1));
+        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson: Proper Attire", "l_proper_attire.jpg", 1, 2));
+        list.add(makeContentItemValues(2, ContentType.IMAGE, "Comics: Worst Interview", "c_worst_interview.jpg", 5, 1));
+        list.add(makeContentItemValues(2, ContentType.VIDEO, "Lesson: Common Interview Questions", "l_common_interview.jpg", 2, 2));
+        list.add(makeContentItemValues(2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", "a_default.jpg", 1, 3));
+        list.add(makeContentItemValues(3, ContentType.IMAGE, "Comics: Stuttering", "c_stuttering.jpg", 6, 1));
+        list.add(makeContentItemValues(3, ContentType.VIDEO, "Lesson: Formatting Slides", "l_formatting_slides.jpg", 3, 2));
 
         makeDbTransactions(db, ContentEntry.TABLE_NAME, list);
     }
@@ -113,11 +113,12 @@ public class TestUtil {
         return cv;
     }
 
-    private static ContentValues makeContentItemValues(Integer topicId, Integer type, String title, Integer contentId, Integer seqNum) {
+    private static ContentValues makeContentItemValues(Integer topicId, Integer type, String title, String coverArtPath, Integer contentId, Integer seqNum) {
         ContentValues cv = new ContentValues();
         cv.put(ContentEntry.COLUMN_TOPIC_ID, topicId);
         cv.put(ContentEntry.COLUMN_TYPE, type);
         cv.put(ContentEntry.COLUMN_TITLE, title);
+        cv.put(ContentEntry.COLUMN_COVER_ART_PATH, coverArtPath);
         cv.put(ContentEntry.COLUMN_CONTENT_ID, contentId);
         cv.put(ContentEntry.COLUMN_SEQ_NUM, seqNum);
         return cv;

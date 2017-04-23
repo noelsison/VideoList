@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><!-- TODO: Check out compound drawable -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_default">
+
+    <ImageView
+        android:id="@+id/item_nested_list_inner_im"
+        android:layout_width="@dimen/cover_art_width"
+        android:layout_height="@dimen/cover_art_height"
+        android:background="@color/light_gray"
+        android:contentDescription="@string/content_description_cover_art" />
+
+    <TextView
+        android:id="@+id/item_nested_list_inner_tv"
+        android:layout_width="@dimen/cover_art_width"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_default" />
+
+</LinearLayout>
