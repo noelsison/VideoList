@@ -15,6 +15,7 @@ import com.example.noel.videolist.R;
 import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.comics.ComicsActivity;
+import com.example.noel.videolist.activity.interview.practice.InterviewPracticeActivity;
 import com.example.noel.videolist.data.DbConstants;
 import com.example.noel.videolist.data.DbConstants.ContentType;
 import com.example.noel.videolist.data.VideoListContentProvider;
@@ -81,7 +82,7 @@ public class ContentListActivity extends BaseRecyclerListActivity {
                 startActivity(intent);
                 break;
             case ContentType.AUDIO_RECORD:
-                intent = new Intent(getApplicationContext(), AudioRecorderActivity.class);
+                intent = new Intent(getApplicationContext(), InterviewPracticeActivity.class);
                 startActivity(intent);
                 break;
             case ContentType.IMAGE:
