@@ -21,6 +21,9 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     public void startPlaying(String filename) {
+        if (isPlaying) {
+            stopPlaying();
+        }
         try {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setOnCompletionListener(this);
@@ -34,6 +37,9 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     public void stopPlaying() {
+        if (!isPlaying) {
+            return;
+        }
         isPlaying = false;
         mediaPlayer.release();
         mediaPlayer = null;
@@ -41,7 +47,9 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        mediaPlayerListener.onFinishPlaying();
+        if (mediaPlayerListener != null) {
+            mediaPlayerListener.onFinishPlaying();
+        }
     }
 
     public boolean isPlaying() {
@@ -49,7 +57,6 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     interface MediaPlayerListener {
-        void onFinishLoading();
         void onFinishPlaying();
     }
 }

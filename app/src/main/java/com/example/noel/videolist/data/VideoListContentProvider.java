@@ -16,6 +16,7 @@ import com.example.noel.videolist.data.VideoListContract.ContentEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListContract.TopicEntry;
+import com.example.noel.videolist.data.VideoListContract.InterviewQuestion;
 
 /**
  * Created by Noel on 2/27/2017.
@@ -33,6 +34,7 @@ public class VideoListContentProvider extends ContentProvider {
     private static final int CONTENT_ITEM = 6;
     private static final int MEDIA_ALL = 7;
     private static final int MEDIA_ITEM = 8;
+    private static final int CONTENT_INTERVIEW_QUESTIONS = 9;
 
     private static final String AUTHORITY = "com.example.noel.videolist";
 
@@ -40,12 +42,14 @@ public class VideoListContentProvider extends ContentProvider {
     private static final String TOPIC_PATH = "topic";
     private static final String CONTENT_PATH = "content";
     private static final String MEDIA_PATH = "media";
+    private static final String INTERVIEW_QUESTION_PATH = "interview-question";
 
     // Public URIs
     public static final Uri MODULE_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, MODULE_PATH));
     public static final Uri TOPIC_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, TOPIC_PATH));
     public static final Uri CONTENT_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, CONTENT_PATH));
     public static final Uri MEDIA_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, MEDIA_PATH));
+    public static final Uri INTERVIEW_QUESTION_URI = Uri.parse(String.format("content://%s/%s", AUTHORITY, INTERVIEW_QUESTION_PATH));
 
     // String format
     public static final String TYPE_FORMAT = "%s/vnd.example.noel.videolist.%s";
@@ -62,6 +66,7 @@ public class VideoListContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, CONTENT_PATH + "/#", CONTENT_ITEM);
         uriMatcher.addURI(AUTHORITY, MEDIA_PATH, MEDIA_ALL);
         uriMatcher.addURI(AUTHORITY, MEDIA_PATH + "/*", MEDIA_ITEM);
+        uriMatcher.addURI(AUTHORITY, INTERVIEW_QUESTION_PATH + "/#", CONTENT_INTERVIEW_QUESTIONS);
     }
 
     private static final String unsupportedUri = "Unsupported URI: ";
@@ -101,6 +106,9 @@ public class VideoListContentProvider extends ContentProvider {
                 queryBuilder.setTables(MediaEntry.TABLE_NAME);
                 queryBuilder.appendWhere("_ID = " + uri.getLastPathSegment());
                 break;
+            case CONTENT_INTERVIEW_QUESTIONS:
+                queryBuilder.setTables(InterviewQuestion.TABLE_NAME);
+                queryBuilder.appendWhere(InterviewQuestion.COLUMN_CONTENT_ID + " = " + uri.getLastPathSegment());
         }
 
         Cursor cursor = null;

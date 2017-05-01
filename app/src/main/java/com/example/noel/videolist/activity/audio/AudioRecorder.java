@@ -23,10 +23,8 @@ public class AudioRecorder {
     Handler handler;
     Runnable updateAmplitude;
 
-    public AudioRecorder (final AudioRecorderListener audioRecorderListener) {
+    public AudioRecorder(final AudioRecorderListener audioRecorderListener) {
         this.audioRecorderListener = audioRecorderListener;
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 
         // TODO: Make this optional
         handler = new Handler();
@@ -40,8 +38,11 @@ public class AudioRecorder {
     }
 
     public void startRecording(String filename) {
+        if (isRecording) {
+            stopRecording();
+        }
         try {
-            mediaRecorder.reset();
+            mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mediaRecorder.setOutputFile(filename);
@@ -59,11 +60,15 @@ public class AudioRecorder {
     }
 
     public void stopRecording() {
+        if (!isRecording) {
+            return;
+        }
         isRecording = false;
         handler.removeCallbacks(updateAmplitude);
         mediaRecorder.stop();
         mediaRecorder.release();
         mediaRecorder = null;
+        audioRecorderListener.updateAmplitude(0);
     }
 
     public boolean isRecording() {
@@ -71,7 +76,7 @@ public class AudioRecorder {
     }
 
     public int getMaxAmplitude() {
-        return mediaRecorder.getMaxAmplitude();
+        return mediaRecorder != null ? mediaRecorder.getMaxAmplitude() : 0;
     }
 
     interface AudioRecorderListener {

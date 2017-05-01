@@ -73,7 +73,7 @@ public class VideoListContract {
         public final static String COLUMN_TYPE = "type";
         public final static String COLUMN_TITLE = "title";
         public final static String COLUMN_COVER_ART_PATH = "coverArtPath";
-        public final static String COLUMN_CONTENT_ID = "contentId";
+        public final static String COLUMN_CONTENT_ID = "contentId"; // TODO: Change this since it's ambiguous
         public final static String COLUMN_SEQ_NUM = "seqNum";
 
         private int topicId;
@@ -138,6 +138,44 @@ public class VideoListContract {
 
         public String getFilename() {
             return filename;
+        }
+    }
+
+    public static final class InterviewQuestion extends Model {
+        public final static String TABLE_NAME = "interviewQuestion";
+        public final static String COLUMN_CONTENT_ID = "contentId";
+        public final static String COLUMN_TEXT = "text";
+        public final static String COLUMN_AUDIO_FILE_PATH = "audioFilePath";
+        public final static String COLUMN_SEQ_NUM = "seqNum";
+
+        private int contentId;
+        private String text;
+        private String audioFilePath;
+        private int seqNum;
+
+        public InterviewQuestion(Cursor cursor) {
+            super(cursor);
+
+            contentId = cursor.getInt(cursor.getColumnIndex(COLUMN_CONTENT_ID));
+            text = cursor.getString(cursor.getColumnIndex(COLUMN_TEXT));
+            audioFilePath = cursor.getString(cursor.getColumnIndex(COLUMN_AUDIO_FILE_PATH));
+            seqNum = cursor.getInt(cursor.getColumnIndex(COLUMN_SEQ_NUM));
+        }
+
+        public int getContentId() {
+            return contentId;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public String getAudioFilePath() {
+            return audioFilePath;
+        }
+
+        public int getSeqNum() {
+            return seqNum;
         }
     }
 }

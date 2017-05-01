@@ -18,6 +18,7 @@
 
     <string name="interview_practice_button_replay">Replay</string>
     <string name="interview_practice_button_next">Next</string>
+    <string name="interview_practice_button_finish">Finish</string>
     <string name="interview_practice_recording">Recording&#8230;</string>
 
     <string name="content_description_cover_art">Cover Art</string>

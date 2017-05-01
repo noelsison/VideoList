@@ -23,10 +23,10 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/activity_interview_practice_ll_record_visualizer_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/interview_practice_ll_buttons_holder"
+        android:layout_above="@+id/interview_practice_fragment_buttons_holder"
         android:orientation="horizontal"
         android:padding="@dimen/padding_default">
 
@@ -46,34 +46,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/interview_practice_ll_buttons_holder"
+    <fragment
+        android:id="@+id/interview_practice_fragment_buttons_holder"
+        android:name="com.example.noel.videolist.activity.interview.practice.InterviewButtonsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/interview_practice_b_replay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableEnd="@drawable/ic_replay"
-            android:drawableRight="@drawable/ic_replay"
-            android:text="@string/interview_practice_button_replay" />
-
-        <Button
-            android:id="@+id/interview_practice_b_next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableEnd="@drawable/ic_arrow_forward"
-            android:drawableRight="@drawable/ic_arrow_forward"
-            android:text="@string/interview_practice_button_next" />
-
-    </LinearLayout>
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

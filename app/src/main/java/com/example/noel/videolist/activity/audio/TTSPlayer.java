@@ -22,29 +22,41 @@ public class TTSPlayer extends UtteranceProgressListener {
     private TextToSpeech textToSpeech;
     private boolean isPlaying = false;
 
+    private String queuedText;
+    private boolean hasQueuedText;
+
     public TTSPlayer(Context context, final AudioPlayer.MediaPlayerListener mediaPlayerListener) {
         final TTSPlayer ttsPlayer = this;
         this.mediaPlayerListener = mediaPlayerListener;
+
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 textToSpeech.setLanguage(Locale.US);
-                mediaPlayerListener.onFinishLoading();
-
                 textToSpeech.setOnUtteranceProgressListener(ttsPlayer);
+                if (hasQueuedText) {
+                    speak(queuedText);
+                }
             }
         });
+
     }
 
     public void speak(String text) {
         isPlaying = true;
+        int status = -1;
         HashMap<String, String> params = new HashMap<String, String>();
         String utteranceId = String.valueOf(text.hashCode());
         params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+            status = textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
         } else {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+            status = textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+        }
+        if (status != 0) {
+            Log.e(TAG, "Speak failed. TTS has not finished initializing.");
+            hasQueuedText = true;
+            queuedText = text;
         }
     }
 

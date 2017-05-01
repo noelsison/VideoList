@@ -86,6 +86,8 @@ public class NestedListActivity extends BaseRecyclerListActivity {
                 break;
             case DbConstants.ContentType.AUDIO_RECORD:
                 intent = new Intent(getApplicationContext(), InterviewPracticeActivity.class);
+                intent.putExtra(InterviewPracticeActivity.INTENT_EXTRA_CONTENT_ID, contentItemEntry.getId());
+                intent.putExtra(InterviewPracticeActivity.INTENT_EXTRA_CONTENT_TITLE, contentItemEntry.getTitle());
                 startActivity(intent);
                 break;
             case DbConstants.ContentType.IMAGE:

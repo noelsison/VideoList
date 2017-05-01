@@ -9,6 +9,7 @@ import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListContract.TopicEntry;
 import com.example.noel.videolist.data.VideoListContract.ContentEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaEntry;
+import com.example.noel.videolist.data.VideoListContract.InterviewQuestion;
 
 /**
  * Created by Noel on 2/13/2017.
@@ -17,7 +18,7 @@ import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 public class VideoListDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "videoList.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     private static VideoListDbHelper instance;
 
@@ -75,6 +76,17 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
                 " ); ";
         Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_MEDIA_ITEM_TABLE);
         db.execSQL(SQL_CREATE_MEDIA_ITEM_TABLE);
+
+        // InterviewQuestions Table
+        final String SQL_CREATE_INTERVIEW_QUESTION_TABLE = "CREATE TABLE " + InterviewQuestion.TABLE_NAME + " (" +
+                InterviewQuestion._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                InterviewQuestion.COLUMN_CONTENT_ID + " INTEGER NOT NULL, " +
+                InterviewQuestion.COLUMN_TEXT + " TEXT NOT NULL, " +
+                InterviewQuestion.COLUMN_AUDIO_FILE_PATH + " TEXT, " +
+                InterviewQuestion.COLUMN_SEQ_NUM + " INTEGER NOT NULL" +
+                " ); ";
+        Log.d(VideoListDbHelper.class.getName(), SQL_CREATE_INTERVIEW_QUESTION_TABLE);
+        db.execSQL(SQL_CREATE_INTERVIEW_QUESTION_TABLE);
     }
 
     @Override
@@ -84,6 +96,7 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TopicEntry.TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + ContentEntry.TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + MediaEntry.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + InterviewQuestion.TABLE_NAME + ";");
         onCreate(db);
     }
 }

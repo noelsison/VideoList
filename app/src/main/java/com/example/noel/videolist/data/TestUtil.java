@@ -14,6 +14,7 @@ import com.example.noel.videolist.data.VideoListContract.TopicEntry;
 import com.example.noel.videolist.data.VideoListContract.ModuleEntry;
 import com.example.noel.videolist.data.VideoListContract.ContentEntry;
 import com.example.noel.videolist.data.VideoListContract.MediaEntry;
+import com.example.noel.videolist.data.VideoListContract.InterviewQuestion;
 
 /**
  * Created by Noel on 2/13/2017.
@@ -29,6 +30,8 @@ public class TestUtil {
         makeFakeTopicItems(db);
         makeFakeContentItems(db);
         makeFakeMediaItems(db);
+        makeFakeInterviewQuestions(db);
+        makeFakeInterviewQuestions(db);
         Log.d(TAG, "Done generating fake DB data");
     }
 
@@ -58,13 +61,13 @@ public class TestUtil {
         List<ContentValues> list = new ArrayList<ContentValues>();
 
         // Fake ContentItem entries
-        list.add(makeContentItemValues(1, ContentType.IMAGE, "Comics: Shorts", "c_shorts.jpg", 4, 1));
-        list.add(makeContentItemValues(1, ContentType.VIDEO, "Lesson: Proper Attire", "l_proper_attire.jpg", 1, 2));
-        list.add(makeContentItemValues(2, ContentType.IMAGE, "Comics: Worst Interview", "c_worst_interview.jpg", 5, 1));
-        list.add(makeContentItemValues(2, ContentType.VIDEO, "Lesson: Common Interview Questions", "l_common_interview.jpg", 2, 2));
-        list.add(makeContentItemValues(2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", "a_default.jpg", 1, 3));
-        list.add(makeContentItemValues(3, ContentType.IMAGE, "Comics: Stuttering", "c_stuttering.jpg", 6, 1));
-        list.add(makeContentItemValues(3, ContentType.VIDEO, "Lesson: Formatting Slides", "l_formatting_slides.jpg", 3, 2));
+        list.add(makeContentItemValues(1, 1, ContentType.IMAGE, "Comics: Shorts", "c_shorts.jpg", 4, 1));
+        list.add(makeContentItemValues(2, 1, ContentType.VIDEO, "Lesson: Proper Attire", "l_proper_attire.jpg", 1, 2));
+        list.add(makeContentItemValues(3, 2, ContentType.IMAGE, "Comics: Worst Interview", "c_worst_interview.jpg", 5, 1));
+        list.add(makeContentItemValues(4, 2, ContentType.VIDEO, "Lesson: Common Interview Questions", "l_common_interview.jpg", 2, 2));
+        list.add(makeContentItemValues(5, 2, ContentType.AUDIO_RECORD, "Activity: Your First Interview", "a_default.jpg", 1, 3));
+        list.add(makeContentItemValues(6, 3, ContentType.IMAGE, "Comics: Stuttering", "c_stuttering.jpg", 6, 1));
+        list.add(makeContentItemValues(7, 3, ContentType.VIDEO, "Lesson: Formatting Slides", "l_formatting_slides.jpg", 3, 2));
 
         makeDbTransactions(db, ContentEntry.TABLE_NAME, list);
     }
@@ -80,6 +83,18 @@ public class TestUtil {
         list.add(makeMediaItemValues(6, "Wifi Password: Hope", "ce_s04_03.jpg"));
 
         makeDbTransactions(db, MediaEntry.TABLE_NAME, list);
+    }
+
+    private static void makeFakeInterviewQuestions(SQLiteDatabase db) {
+        List<ContentValues> list = new ArrayList<ContentValues>();
+        // Fake InterviewQuestion entries
+        list.add(makeInterviewQuestionValues(5, "Tell me about yourself.", null, 1));
+        //list.add(makeInterviewQuestionValues(5, "How do you see yourself five years from now?", null, 2));
+        //list.add(makeInterviewQuestionValues(5, "What is your greatest achievement?", null, 3));
+        //list.add(makeInterviewQuestionValues(5, "I see. Do you have any other questions?", null, 4));
+        //list.add(makeInterviewQuestionValues(5, "Great. We’ll contact you in a week’s time. Thanks!", null, 5));
+
+        makeDbTransactions(db, InterviewQuestion.TABLE_NAME, list);
     }
 
     private static void makeDbTransactions(SQLiteDatabase db, String tableName, List<ContentValues> list) {
@@ -113,8 +128,9 @@ public class TestUtil {
         return cv;
     }
 
-    private static ContentValues makeContentItemValues(Integer topicId, Integer type, String title, String coverArtPath, Integer contentId, Integer seqNum) {
+    private static ContentValues makeContentItemValues(Integer id, Integer topicId, Integer type, String title, String coverArtPath, Integer contentId, Integer seqNum) {
         ContentValues cv = new ContentValues();
+        cv.put(ContentEntry._ID, id);
         cv.put(ContentEntry.COLUMN_TOPIC_ID, topicId);
         cv.put(ContentEntry.COLUMN_TYPE, type);
         cv.put(ContentEntry.COLUMN_TITLE, title);
@@ -131,4 +147,14 @@ public class TestUtil {
         cv.put(MediaEntry.COLUMN_FILENAME, filename);
         return cv;
     }
+
+    private static ContentValues makeInterviewQuestionValues(Integer contentId, String text, String audioFilePath, Integer seqNum) {
+        ContentValues cv = new ContentValues();
+        cv.put(InterviewQuestion.COLUMN_CONTENT_ID, contentId);
+        cv.put(InterviewQuestion.COLUMN_TEXT, text);
+        cv.put(InterviewQuestion.COLUMN_AUDIO_FILE_PATH, audioFilePath);
+        cv.put(InterviewQuestion.COLUMN_SEQ_NUM, seqNum);
+        return cv;
+    }
+
 }
