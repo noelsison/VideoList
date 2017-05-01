@@ -1,4 +1,4 @@
-package com.example.noel.videolist.activity.content;
+package com.example.noel.videolist.activity.list;
 
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -9,51 +9,52 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.noel.videolist.R;
-import com.example.noel.videolist.activity.audio.AudioRecorderActivity;
 import com.example.noel.videolist.activity.base.BaseRecyclerListActivity;
 import com.example.noel.videolist.activity.comics.ComicsActivity;
+import com.example.noel.videolist.activity.content.ContentListActivity;
 import com.example.noel.videolist.activity.interview.practice.InterviewPracticeActivity;
-import com.example.noel.videolist.data.DbConstants;
-import com.example.noel.videolist.data.DbConstants.ContentType;
-import com.example.noel.videolist.data.VideoListContentProvider;
-import com.example.noel.videolist.data.VideoListContract.Model;
-import com.example.noel.videolist.data.VideoListContract.ContentEntry;
 import com.example.noel.videolist.activity.video.VideoPlayerActivity;
+import com.example.noel.videolist.data.DbConstants;
+import com.example.noel.videolist.data.VideoListContentProvider;
+import com.example.noel.videolist.data.VideoListContract;
 
 /**
- * Created by Noel on 3/6/2017.
+ * Created by Noel on 4/23/2017.
  */
 
-public class ContentListActivity extends BaseRecyclerListActivity {
+public class NestedListActivity extends BaseRecyclerListActivity {
 
     private final String TAG = ContentListActivity.class.getName();
-    private static final int DB_LOADER = 0;
+    static final int TOPIC_LOADER = 0;
+    static final int CONTENT_LOADER = 1;
 
-    public static final String INTENT_EXTRA_TOPIC_ID = "TOPIC_ID";
-    public static final String INTENT_EXTRA_TOPIC_TITLE = "TOPIC_TITLE";
+    public static final String INTENT_EXTRA_MODULE_ID = "MODULE_ID";
+    public static final String INTENT_EXTRA_MODULE_TITLE = "MODULE_TITLE";
+    public static final String BUNDLE_MODULE_ID = "MODULE_ID";
 
     RecyclerView recyclerView;
-    ContentListAdapter adapter;
+    NestedListAdapter adapter;
 
-    int topicId;
-    String topicTitle;
+    int moduleId;
+    String moduleTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        topicId = this.getIntent().getIntExtra(INTENT_EXTRA_TOPIC_ID, 0);
-        topicTitle = this.getIntent().getStringExtra(INTENT_EXTRA_TOPIC_TITLE);
+        moduleId = this.getIntent().getIntExtra(INTENT_EXTRA_MODULE_ID, 0);
+        moduleTitle = this.getIntent().getStringExtra(INTENT_EXTRA_MODULE_TITLE);
 
         // Main UI
-        setContentView(R.layout.activity_content_list);
-        getSupportActionBar().setTitle(topicTitle);
+        setContentView(R.layout.activity_nested_list);
+        getSupportActionBar().setTitle(moduleTitle);
 
         // Body UI
-        recyclerView = (RecyclerView) findViewById(R.id.rv_content_list);
+        recyclerView = (RecyclerView) findViewById(R.id.activity_nested_list_rv);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -62,30 +63,32 @@ public class ContentListActivity extends BaseRecyclerListActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Adapter that will connect the UI and DB fetch results
-        adapter = new ContentListAdapter(this);
+        adapter = new NestedListAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Handles DB
-        getLoaderManager().initLoader(DB_LOADER, null, this);
+        Bundle bundle = new Bundle(1);
+        bundle.putString(BUNDLE_MODULE_ID, Integer.toString(moduleId));
+        getLoaderManager().initLoader(TOPIC_LOADER, bundle, this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public void onItemClick(Model model) {
-        ContentEntry contentItemEntry = (ContentEntry) model;
+    public void onItemClick(VideoListContract.Model model) {
+        VideoListContract.ContentEntry contentItemEntry = (VideoListContract.ContentEntry) model;
         Intent intent;
         switch (contentItemEntry.getType()) {
-            case ContentType.VIDEO:
+            case DbConstants.ContentType.VIDEO:
                 intent = new Intent(getApplicationContext(), VideoPlayerActivity.class);
                 intent.putExtra(VideoPlayerActivity.INTENT_EXTRA_ID, contentItemEntry.getContentId());
                 startActivity(intent);
                 break;
-            case ContentType.AUDIO_RECORD:
+            case DbConstants.ContentType.AUDIO_RECORD:
                 intent = new Intent(getApplicationContext(), InterviewPracticeActivity.class);
                 startActivity(intent);
                 break;
-            case ContentType.IMAGE:
+            case DbConstants.ContentType.IMAGE:
                 intent = new Intent(getApplicationContext(), ComicsActivity.class);
                 intent.putExtra(ComicsActivity.INTENT_EXTRA_ID, contentItemEntry.getContentId());
                 startActivity(intent);
@@ -100,12 +103,11 @@ public class ContentListActivity extends BaseRecyclerListActivity {
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case DB_LOADER:
-                String topicIdString = Integer.toString(topicId);
+            case TOPIC_LOADER:
                 return new CursorLoader(this,
-                        Uri.parse(VideoListContentProvider.TOPIC_URI + "/" + topicIdString),
+                        Uri.parse(VideoListContentProvider.MODULE_URI + "/" + args.getString(BUNDLE_MODULE_ID)),
                         null, null, null,
-                        ContentEntry.COLUMN_SEQ_NUM);
+                        VideoListContract.TopicEntry.COLUMN_SEQ_NUM);
             default:
                 return null;
         }

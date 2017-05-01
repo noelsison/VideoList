@@ -12,4 +12,8 @@
     <dimen name="text_spacing_splash">10sp</dimen>
     <dimen name="text_spacing_dummy">15sp</dimen>
     <dimen name="text_size_medium">24sp</dimen>
+
+    <dimen name="nested_list_inner_recyclerview_height">280dp</dimen>
+    <dimen name="cover_art_width">200dp</dimen>
+    <dimen name="cover_art_height">200dp</dimen>
 </resources>

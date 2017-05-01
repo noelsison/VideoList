@@ -17,7 +17,7 @@ import com.example.noel.videolist.data.VideoListContract.MediaEntry;
 public class VideoListDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "videoList.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     private static VideoListDbHelper instance;
 
@@ -60,6 +60,7 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
                 ContentEntry.COLUMN_TOPIC_ID + " INTEGER NOT NULL, " +
                 ContentEntry.COLUMN_TYPE + " INTEGER NOT NULL, " +
                 ContentEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                ContentEntry.COLUMN_COVER_ART_PATH + " TEXT NOT NULL, " +
                 ContentEntry.COLUMN_CONTENT_ID + " INTEGER NOT NULL," +
                 ContentEntry.COLUMN_SEQ_NUM + " INTEGER NOT NULL" +
                 " ); ";
@@ -80,6 +81,7 @@ public class VideoListDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: Change to use proper migration
         db.execSQL("DROP TABLE IF EXISTS " + ModuleEntry.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TopicEntry.TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + ContentEntry.TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + MediaEntry.TABLE_NAME + ";");
         onCreate(db);
