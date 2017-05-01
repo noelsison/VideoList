@@ -19,6 +19,7 @@ import com.example.noel.videolist.activity.audio.BaseInterviewActivity;
 import com.example.noel.videolist.activity.audio.TTSPlayer;
 import com.example.noel.videolist.data.VideoListContract.InterviewQuestion;
 
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -96,7 +97,13 @@ public class InterviewPracticeActivity extends BaseInterviewActivity implements 
         buttonsFragment.setButtonsEnabled(false);
         // TODO: If there are errors playing the sound file, fallback to TTS
         if (interviewQuestion.getAudioFilePath() != null) {
-            audioPlayer.startPlaying(interviewQuestion.getAudioFilePath());
+            try {
+                String path = getString(R.string.path_interview_question_audio) +
+                        interviewQuestion.getAudioFilePath();
+                audioPlayer.startPlaying(getAssets().openFd(path));
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to open audio file: " + interviewQuestion.getAudioFilePath());
+            }
         } else {
             ttsPlayer.speak(interviewQuestion.getText());
         }

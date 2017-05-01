@@ -1,5 +1,6 @@
 package com.example.noel.videolist.activity.audio;
 
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
 
@@ -18,6 +19,25 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener {
 
     public AudioPlayer(MediaPlayerListener mediaPlayerListener) {
         this.mediaPlayerListener = mediaPlayerListener;
+    }
+
+    public void startPlaying(AssetFileDescriptor assetFileDescriptor) {
+        if (isPlaying) {
+            stopPlaying();
+        }
+        try {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setDataSource(
+                    assetFileDescriptor.getFileDescriptor(),
+                    assetFileDescriptor.getStartOffset(),
+                    assetFileDescriptor.getLength());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            isPlaying = true;
+        } catch (IOException e) {
+            Log.e(TAG, "Play failed");
+        }
     }
 
     public void startPlaying(String filename) {

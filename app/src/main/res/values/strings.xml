@@ -20,6 +20,7 @@
     <string name="interview_practice_button_next">Next</string>
     <string name="interview_practice_button_finish">Finish</string>
     <string name="interview_practice_recording">Recording&#8230;</string>
+    <string name="path_interview_question_audio">interview_audio/</string>
 
     <string name="content_description_cover_art">Cover Art</string>
     <string name="path_cover_art">cover_art/</string>

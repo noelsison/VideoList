@@ -88,11 +88,11 @@ public class TestUtil {
     private static void makeFakeInterviewQuestions(SQLiteDatabase db) {
         List<ContentValues> list = new ArrayList<ContentValues>();
         // Fake InterviewQuestion entries
-        list.add(makeInterviewQuestionValues(5, "Tell me about yourself.", null, 1));
-        //list.add(makeInterviewQuestionValues(5, "How do you see yourself five years from now?", null, 2));
-        //list.add(makeInterviewQuestionValues(5, "What is your greatest achievement?", null, 3));
-        //list.add(makeInterviewQuestionValues(5, "I see. Do you have any other questions?", null, 4));
-        //list.add(makeInterviewQuestionValues(5, "Great. We’ll contact you in a week’s time. Thanks!", null, 5));
+        list.add(makeInterviewQuestionValues(5, "Tell me about yourself.", "5_01.mp3", 1));
+        list.add(makeInterviewQuestionValues(5, "How do you see yourself five years from now?", "5_02.mp3", 2));
+        list.add(makeInterviewQuestionValues(5, "What is your greatest achievement?", "5_03.mp3", 3));
+        list.add(makeInterviewQuestionValues(5, "I see. Do you have any other questions?", "5_04.mp3", 4));
+        list.add(makeInterviewQuestionValues(5, "Great. We’ll contact you in a week’s time. Thanks!", "5_05.mp3", 5));
 
         makeDbTransactions(db, InterviewQuestion.TABLE_NAME, list);
     }
